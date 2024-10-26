@@ -4,12 +4,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block stylesheets %}
-        {{ encore_entry_link_tags('app') }}
+        <link rel="stylesheet" href="{{ asset('build/app.css') }}">
     {% endblock %}
 </head>
 <body>
-<h1 class="text-3xl font-bold underline">
-    Hello world!
-</h1>
+
+{% for coaster in coasters %}
+    <div class="bg-red-200 p-4 my-4">
+        <h2 class="text-xl font-bold">{{ coaster.name }}</h2>
+    </div>
+{% endfor %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+
 </body>
 </html>
