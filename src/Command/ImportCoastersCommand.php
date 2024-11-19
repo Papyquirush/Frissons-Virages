@@ -31,17 +31,25 @@ class ImportCoastersCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $totalCoasters = $this->coasterService->getNbCoasters();
-        $progressBar = new ProgressBar($output, $totalCoasters);
+
+        $progressBar = new ProgressBar($output, 1000);
         $progressBar->start();
 
         $coasters = [];
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 0; $i <= 0; $i++) {
             $coasters[] = $this->coasterService->getCoasterById($i);
             $progressBar->advance();
         }
 
         $progressBar->finish();
+        $emptyArraysCount = count(array_filter($coasters, function($coaster) {
+            return empty($coaster);
+        }));
+
+        $coasters = array_filter($coasters, function($coaster) {
+            return !empty($coaster);
+        });
+        dump($emptyArraysCount);
         $this->coasterDatabaseService->saveCoasters($coasters);
 
         $io->success('Coasters imported successfully!');

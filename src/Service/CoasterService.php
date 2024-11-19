@@ -31,12 +31,16 @@ class CoasterService
 
     public function getCoasterById(int $id): array
     {
+        try {
         $response = $this->httpClient->request('GET', 'https://captaincoaster.com/api/coasters/' . $id, [
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->token,
             ],
         ]);
         return $response->toArray();
+    }catch (\Exception $e){
+        return [];
+    }
     }
 
 

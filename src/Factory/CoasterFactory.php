@@ -83,6 +83,9 @@ class CoasterFactory
 
         $mainImage = "https://pictures.captaincoaster.com/280x210/" . ($data['mainImage']['path'] ?? '');
 
+        $openingDate = isset($data['openingDate']) ? new \DateTime($data['openingDate']) : new \DateTime('0001-01-01');;
+
+
         return new Coaster(
             $data['id'],
             $data['name'],
@@ -98,7 +101,7 @@ class CoasterFactory
             $launches,
             $park,
             $status,
-            new \DateTime($data['openingDate']),
+            $openingDate,
             $data['totalRatings'],
             $data['validDuels'],
             (float)($data['score'] ?? 0.0),

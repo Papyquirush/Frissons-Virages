@@ -20,8 +20,10 @@ class CoasterDatabaseService
     public function saveCoasters(array $coasterData): void
     {
         foreach ($coasterData as $data) {
-            $coaster = $this->coasterFactory->createSingleFromCaptainData($data);
-            $this->entityManager->persist($coaster);
+            if(!empty($coasterData)) {
+                $coaster = $this->coasterFactory->createSingleFromCaptainData($data);
+                $this->entityManager->persist($coaster);
+            }
         }
 
         $this->entityManager->flush();
