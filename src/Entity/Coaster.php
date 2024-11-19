@@ -21,15 +21,15 @@ class Coaster
     #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
-    #[ORM\ManyToOne(targetEntity: MaterialType::class)]
+    #[ORM\ManyToOne(targetEntity: MaterialType::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private MaterialType $materialType;
 
-    #[ORM\ManyToOne(targetEntity: SeatingType::class)]
+    #[ORM\ManyToOne(targetEntity: SeatingType::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private SeatingType $seatingType;
 
-    #[ORM\ManyToOne(targetEntity: Model::class)]
+    #[ORM\ManyToOne(targetEntity: Model::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private Model $model;
 
@@ -45,23 +45,23 @@ class Coaster
     #[ORM\Column(type: 'integer')]
     private int $inversionsNumber;
 
-    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private Manufacturer $manufacturer;
 
-    #[ORM\ManyToOne(targetEntity: Restraint::class)]
+    #[ORM\ManyToOne(targetEntity: Restraint::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private Restraint $restraint;
 
-    #[ORM\ManyToMany(targetEntity: Launches::class)]
+    #[ORM\ManyToMany(targetEntity: Launches::class, cascade: ['persist'])]
     private Collection $launches;
 
 
-    #[ORM\ManyToOne(targetEntity: Park::class)]
+    #[ORM\ManyToOne(targetEntity: Park::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private Park $park;
 
-    #[ORM\ManyToOne(targetEntity: Status::class)]
+    #[ORM\ManyToOne(targetEntity: Status::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private Status $status;
     #[ORM\Column(type: 'datetime')]
@@ -105,6 +105,7 @@ class Coaster
         string $mainImage
     )
     {
+        $this->idCoaster = $idCoaster;
         $this->name = $name;
         $this->materialType = $materialType;
         $this->seatingType = $seatingType;

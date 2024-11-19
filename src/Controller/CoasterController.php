@@ -37,6 +37,7 @@ class CoasterController extends AbstractController
         $offset = ($page - 1) * $limit;
         $coasters = array_slice($coasters, $offset, $limit);
 
+
         return $this->render('index.html.twig', [
             'coasters' => $coasters,
             'currentPage' => $page,

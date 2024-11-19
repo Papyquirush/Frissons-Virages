@@ -40,4 +40,20 @@ class CoasterService
     }
 
 
+    public function getNbCoasters(): int
+    {
+        $response = $this->httpClient->request('GET', 'https://captaincoaster.com/api/coasters', [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->token,
+            ],
+        ]);
+
+        $data = $response->toArray();
+
+
+        return $data["hydra:totalItems"];
+
+    }
+
+
 }
