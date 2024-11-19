@@ -24,7 +24,7 @@ class CoasterController extends AbstractController
         $response = $this->coasterService->getCoasters();
 
         dump($response);
-        $jsonData = json_encode($response); // Convert array to JSON string
+        $jsonData = json_encode($response);
         $coasters = $this->coasterFactory->createMultipleFromCaptainData($jsonData);
 
         return $this->render('base.html.twig', [
