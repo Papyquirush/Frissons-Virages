@@ -18,7 +18,7 @@ class CoasterController extends AbstractController
     )
     {}
 
-    #[Route('/coasters', name: 'app_coaster_index')]
+    #[Route('/', name: 'coaster_list')]
     public function index(): Response
     {
         $response = $this->coasterService->getCoasters();
@@ -27,7 +27,7 @@ class CoasterController extends AbstractController
         $jsonData = json_encode($response);
         $coasters = $this->coasterFactory->createMultipleFromCaptainData($jsonData);
 
-        return $this->render('base.html.twig', [
+        return $this->render('index.html.twig', [
             'coasters' => $coasters
         ]);
     }
