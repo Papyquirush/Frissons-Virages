@@ -21,12 +21,23 @@ class CoasterService
 
     public function getCoasters(): array
     {
-        $response = $this->httpClient->request('GET', 'https://captaincoaster.com/api/coasters', [
+        $coasters = [];
+        for ($i = 1; $i <= 20; $i++) {
+            $coasters[] = $this->getCoasterById($i);
+        }
+        return $coasters;
+
+    }
+
+    public function getCoasterById(int $id): array
+    {
+        $response = $this->httpClient->request('GET', 'https://captaincoaster.com/api/coasters/' . $id, [
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->token,
-
-                ],
+            ],
         ]);
         return $response->toArray();
     }
+
+
 }
