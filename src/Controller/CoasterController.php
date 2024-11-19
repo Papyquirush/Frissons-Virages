@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Coaster;
 use App\Factory\CoasterFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +32,6 @@ class CoasterController extends AbstractController
         $jsonData = json_encode($response);
 
         $coasters = $this->coasterFactory->createMultipleFromCaptainData($jsonData);
-
         $totalCoasters = count($coasters);
         $totalPages = ceil($totalCoasters / $limit);
         $offset = ($page - 1) * $limit;
@@ -43,4 +43,14 @@ class CoasterController extends AbstractController
             'totalPages' => $totalPages
         ]);
     }
+
+    #[Route('/coaster/{id}', name: 'coaster_details')]
+    #[ParamConverter('id', class: Coaster::class, options: ['id' => 'id'])]
+    public function show(Coaster $coaster): Response
+    {
+        return $this->render('details.html.twig', [
+            'coaster' => $coaster
+        ]);
+    }
+
 }

@@ -50,6 +50,7 @@ class CoasterFactory
 
 
         return new Coaster(
+            $data['id'] ?? '',
             $data['name'] ?? '',
             $materialType,
             $seatingType,
