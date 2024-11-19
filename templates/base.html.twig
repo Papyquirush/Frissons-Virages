@@ -1,23 +1,22 @@
 <!doctype html>
 <html>
 <head>
+    <meta lang="fr">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('build/app.css') }}">
     {% endblock %}
 </head>
-<body>
-
-{% for coaster in coasters %}
-    <div class="bg-red-200 p-4 my-4">
-        <h2 class="text-xl font-bold">{{ coaster.name }}</h2>
-    </div>
-{% endfor %}
-
+<body class="mx-[10%]">
+{{ include('partials/header.html.twig') }}
+<main>
+    {% block body %}
+    {% endblock %}
+</main>
+{{ include('partials/footer.html.twig') }}
+</body>
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
 {% endblock %}
-
-</body>
 </html>
