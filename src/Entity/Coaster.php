@@ -11,8 +11,12 @@ use Doctrine\ORM\Mapping as ORM;
 class Coaster
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'string')]
-    private string $id;
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
+
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $idCoaster;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $name;
@@ -79,7 +83,7 @@ class Coaster
     private string $mainImage;
 
     public function __construct(
-        string $id,
+        string $idCoaster,
         string $name,
         MaterialType $materialType,
         SeatingType $seatingType,
@@ -101,7 +105,6 @@ class Coaster
         string $mainImage
     )
     {
-        $this->id = $id;
         $this->name = $name;
         $this->materialType = $materialType;
         $this->seatingType = $seatingType;
@@ -126,6 +129,11 @@ class Coaster
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getIdCoaster(): string
+    {
+        return $this->idCoaster;
     }
 
     public function getName(): string

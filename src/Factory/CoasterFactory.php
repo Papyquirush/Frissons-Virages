@@ -31,6 +31,7 @@ class CoasterFactory
     public function createSingleFromCaptainData(array $data): Coaster
     {
         $park = new Park(
+            $data['park']['id'] ?? '',
             $data['park']['name'] ?? '',
             $data['park']['country']['name'] ?? '',
             $data['park']['latitude'] ?? 0.0,

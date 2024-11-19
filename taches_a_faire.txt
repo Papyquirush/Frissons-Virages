@@ -1,0 +1,11 @@
+	- Rank mondial des coasters.
+
+	- Carte des Parcs avec leurs coasters.
+
+	- Comparateur de Coasters.
+
+	- Connexion pour données persos.
+
+	- Liste de ses coasters favoris. (Si le temps faire un classement de ses coaster préfs).
+
+	- Liste de ses Parcs favoris.
