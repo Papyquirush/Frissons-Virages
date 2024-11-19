@@ -4,6 +4,15 @@ namespace App\Factory;
 
 use App\Entity\Coaster;
 use App\Entity\Park;
+use App\Entity\Status;
+use App\Entity\MaterialType;
+use App\Entity\SeatingType;
+use App\Entity\Model;
+use App\Entity\Manufacturer;
+use App\Entity\Restraint;
+use App\Entity\Launches;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 class CoasterFactory
 {
@@ -15,11 +24,8 @@ class CoasterFactory
             throw new \InvalidArgumentException('Invalid JSON data: ' . json_last_error_msg());
         }
 
-        $coasters = [];
-        foreach ($data['hydra:member'] as $coasterData) {
-            $coasters[] = $this->createSingleFromCaptainData($coasterData);
-        }
-        return $coasters;
+
+        return array_map([$this, 'createSingleFromCaptainData'], $data);;
     }
 
     public function createSingleFromCaptainData(array $data): Coaster
@@ -31,27 +37,38 @@ class CoasterFactory
             $data['park']['longitude'] ?? 0.0
         );
 
+        $materialType = new MaterialType($data['materialType']['name'] ?? '');
+        $seatingType = new SeatingType($data['seatingType']['name'] ?? '');
+        $model = new Model($data['model']['name'] ?? '');
+        $manufacturer = new Manufacturer($data['manufacturer']['name'] ?? '');
+        $restraint = new Restraint($data['restraint']['name'] ?? '');
+        $launches = new ArrayCollection(
+            array_map(fn($launch) => new Launches($launch['name'] ?? ''), $data['launchs'] ?? [])
+        );
+        $status = new Status($data['status']['name'] ?? '');
+        $mainImage = "https://pictures.captaincoaster.com/280x210/" . ($data['mainImage']['path'] ?? '');
+
 
         return new Coaster(
             $data['name'] ?? '',
-            $data['materialType']['name'] ?? '',
-            $data['seatingType']['name'] ?? '',
-            $data['model']['name'] ?? '',
+            $materialType,
+            $seatingType,
+            $model,
             $data['speed'] ?? 0,
             $data['height'] ?? 0,
             $data['length'] ?? 0,
             $data['inversionsNumber'] ?? 0,
-            $data['manufacturer']['name'] ?? '',
-            $data['restraint']['name'] ?? '',
-            array_map(fn($launch) => $launch['name'] ?? '', $data['launchs'] ?? []),
+            $manufacturer,
+            $restraint,
+            $launches,
             $park,
-            $data['status']['name'] ?? '',
+            $status,
             new \DateTime($data['openingDate'] ?? 'now'),
             $data['totalRatings'] ?? 0,
             $data['validDuels'] ?? 0,
             (float)($data['score'] ?? 0.0),
             $data['rank'] ?? 0,
-            $data['mainImage']['path'] ?? ''
+            $mainImage
         );
     }
 }

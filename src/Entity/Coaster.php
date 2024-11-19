@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 
@@ -17,14 +18,17 @@ class Coaster
     #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $materialType;
+    #[ORM\ManyToOne(targetEntity: MaterialType::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private MaterialType $materialType;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $seatingType;
+    #[ORM\ManyToOne(targetEntity: SeatingType::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private SeatingType $seatingType;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $model;
+    #[ORM\ManyToOne(targetEntity: Model::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Model $model;
 
     #[ORM\Column(type: 'integer')]
     private int $speed;
@@ -38,22 +42,25 @@ class Coaster
     #[ORM\Column(type: 'integer')]
     private int $inversionsNumber;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $manufacturer;
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Manufacturer $manufacturer;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $restraint;
+    #[ORM\ManyToOne(targetEntity: Restraint::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Restraint $restraint;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private array $launches;
+    #[ORM\ManyToMany(targetEntity: Launches::class)]
+    private Collection $launches;
+
 
     #[ORM\ManyToOne(targetEntity: Park::class)]
     #[ORM\JoinColumn(nullable: false)]
     private Park $park;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private string $status;
-
+    #[ORM\ManyToOne(targetEntity: Status::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Status $status;
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $openingDate;
 
@@ -74,18 +81,18 @@ class Coaster
 
     public function __construct(
         string $name,
-        string $materialType,
-        string $seatingType,
-        string $model,
+        MaterialType $materialType,
+        SeatingType $seatingType,
+        Model $model,
         int $speed,
         int $height,
         int $length,
         int $inversionsNumber,
-        string $manufacturer,
-        string $restraint,
-        array $launches,
+        Manufacturer $manufacturer,
+        Restraint $restraint,
+        Collection $launches,
         Park $park,
-        string $status,
+        Status $status,
         \DateTimeInterface $openingDate,
         int $totalRatings,
         int $validDuels,
@@ -125,17 +132,17 @@ class Coaster
         return $this->name;
     }
 
-    public function getMaterialType(): string
+    public function getMaterialType(): MaterialType
     {
         return $this->materialType;
     }
 
-    public function getSeatingType(): string
+    public function getSeatingType(): SeatingType
     {
         return $this->seatingType;
     }
 
-    public function getModel(): string
+    public function getModel(): Model
     {
         return $this->model;
     }
@@ -160,17 +167,17 @@ class Coaster
         return $this->inversionsNumber;
     }
 
-    public function getManufacturer(): string
+    public function getManufacturer(): Manufacturer
     {
         return $this->manufacturer;
     }
 
-    public function getRestraint(): string
+    public function getRestraint(): Restraint
     {
         return $this->restraint;
     }
 
-    public function getLaunches(): array
+    public function getLaunches(): Collection
     {
         return $this->launches;
     }
@@ -180,7 +187,7 @@ class Coaster
         return $this->park;
     }
 
-    public function getStatus(): string
+    public function getStatus(): Status
     {
         return $this->status;
     }
