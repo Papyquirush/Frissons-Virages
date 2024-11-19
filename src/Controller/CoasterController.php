@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Factory\CoasterFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\CoasterService;
@@ -18,18 +19,28 @@ class CoasterController extends AbstractController
     )
     {}
 
-    #[Route('/coasters', name: 'app_coaster_index')]
-    public function index(): Response
+    #[Route('/', name: 'coaster_list')]
+    public function index(Request $request): Response
     {
-        $response = $this->coasterService->getCoasters();
+        $page = $request->query->getInt('page', 1);
+        $limit = 5;
 
+
+        $response = $this->coasterService->getCoasters();
 
         $jsonData = json_encode($response);
 
         $coasters = $this->coasterFactory->createMultipleFromCaptainData($jsonData);
 
-        return $this->render('base.html.twig', [
-            'coasters' => $coasters
+        $totalCoasters = count($coasters);
+        $totalPages = ceil($totalCoasters / $limit);
+        $offset = ($page - 1) * $limit;
+        $coasters = array_slice($coasters, $offset, $limit);
+
+        return $this->render('index.html.twig', [
+            'coasters' => $coasters,
+            'currentPage' => $page,
+            'totalPages' => $totalPages
         ]);
     }
 }
