@@ -24,11 +24,8 @@ class CoasterFactory
             throw new \InvalidArgumentException('Invalid JSON data: ' . json_last_error_msg());
         }
 
-        $coasters = [];
-        foreach ($data['hydra:member'] as $coasterData) {
-            $coasters[] = $this->createSingleFromCaptainData($coasterData);
-        }
-        return $coasters;
+
+        return array_map([$this, 'createSingleFromCaptainData'], $data);;
     }
 
     public function createSingleFromCaptainData(array $data): Coaster
