@@ -105,6 +105,7 @@ class Coaster
         string $mainImage
     )
     {
+        $this->idCoaster = $idCoaster;
         $this->name = $name;
         $this->materialType = $materialType;
         $this->seatingType = $seatingType;

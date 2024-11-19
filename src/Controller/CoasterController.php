@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\CoasterService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class CoasterController extends AbstractController
 {
@@ -36,7 +37,6 @@ class CoasterController extends AbstractController
         $totalPages = ceil($totalCoasters / $limit);
         $offset = ($page - 1) * $limit;
         $coasters = array_slice($coasters, $offset, $limit);
-
         return $this->render('index.html.twig', [
             'coasters' => $coasters,
             'currentPage' => $page,
@@ -44,9 +44,8 @@ class CoasterController extends AbstractController
         ]);
     }
 
-    #[Route('/coaster/{id}', name: 'coaster_details')]
-    #[ParamConverter('id', class: Coaster::class, options: ['id' => 'id'])]
-    public function show(Coaster $coaster): Response
+    #[Route('/coaster/{coaster}', name: 'coaster_details')]
+    public function showDetails(Coaster $coaster): Response
     {
         return $this->render('details.html.twig', [
             'coaster' => $coaster
