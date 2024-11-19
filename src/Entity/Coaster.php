@@ -16,6 +16,9 @@ class Coaster
     private int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    private string $idCoaster;
+
+    #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
     #[ORM\ManyToOne(targetEntity: MaterialType::class)]
@@ -80,6 +83,7 @@ class Coaster
     private string $mainImage;
 
     public function __construct(
+        string $idCoaster,
         string $name,
         MaterialType $materialType,
         SeatingType $seatingType,
@@ -125,6 +129,11 @@ class Coaster
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getIdCoaster(): string
+    {
+        return $this->idCoaster;
     }
 
     public function getName(): string

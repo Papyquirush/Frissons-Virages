@@ -12,6 +12,8 @@ class Park
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private int $id;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $idPark;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $name;
@@ -27,11 +29,13 @@ class Park
     private float $longitude;
 
     public function __construct(
+        string $idPark,
         string $name,
         string $country,
         float  $latitude,
         float  $longitude)
     {
+        $this->idPark = $idPark;
         $this->name = $name;
         $this->country = $country;
         $this->latitude = $latitude;
@@ -41,6 +45,11 @@ class Park
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getIdPark(): string
+    {
+        return $this->idPark;
     }
 
     public function getName(): string
