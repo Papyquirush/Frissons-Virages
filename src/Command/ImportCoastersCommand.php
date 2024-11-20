@@ -42,14 +42,12 @@ class ImportCoastersCommand extends Command
         }
 
         $progressBar->finish();
-        $emptyArraysCount = count(array_filter($coasters, function($coaster) {
-            return empty($coaster);
-        }));
+
 
         $coasters = array_filter($coasters, function($coaster) {
             return !empty($coaster);
         });
-        dump($emptyArraysCount);
+
         $this->coasterDatabaseService->saveCoasters($coasters);
 
         $io->success('Coasters imported successfully!');
