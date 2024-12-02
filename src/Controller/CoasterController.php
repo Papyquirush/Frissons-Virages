@@ -32,25 +32,15 @@ class CoasterController extends AbstractController
         $coastersArray = array_map(fn($coaster) => $coaster->toArray(), $response);
         $jsonData = json_encode($coastersArray);
         $coasters = $this->coasterFactory->createMultipleFromCaptainData($jsonData);
-
         $totalCoasters = count($coasters);
         $totalPages = ceil($totalCoasters / $limit);
         $offset = ($page - 1) * $limit;
         $coasters = array_slice($coasters, $offset, $limit);
 
-
         return $this->render('index.html.twig', [
             'coasters' => $coasters,
             'currentPage' => $page,
             'totalPages' => $totalPages
-        ]);
-    }
-
-    #[Route('/coaster/{coaster}', name: 'coaster_details')]
-    public function showDetails(Coaster $coaster): Response
-    {
-        return $this->render('details.html.twig', [
-            'coaster' => $coaster
         ]);
     }
 
@@ -63,6 +53,14 @@ class CoasterController extends AbstractController
 
 
         return $this->render('carte.html.twig');
+
+    #[Route('/coaster/{coaster}', name: 'coaster_details')]
+    public function showDetails(Coaster $coaster): Response
+    {
+        return $this->render('details.html.twig', [
+            'coaster' => $coaster
+        ]);
+
     }
 
 }
