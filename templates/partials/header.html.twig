@@ -7,7 +7,12 @@
         <a>Classement mondial des coasters</a>
         <a>Carte de coasters</a>
         <a href="">Mes favoris</a>
-        <a href="{{ path('connexion')}}">Se connecter</a>
+        {% if app.user %}
+            <a class="" href="{{ path('app_logout') }}">Se déconnecter</a>
+        {% else %}
+            <a class="" href="{{ path('app_login') }}">Se connecter</a>
+            <a class="" href="{{ path('register') }}">Créer un compte</a>
+        {% endif %}
     </div>
 </div>
 </header>
