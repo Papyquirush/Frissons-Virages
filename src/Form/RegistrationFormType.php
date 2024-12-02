@@ -18,6 +18,10 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email')
+            ->add('csrf_token', HiddenType::class, [
+                'mapped' => false,
+                'data' => $options['csrf_token_id'],
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -50,6 +54,10 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'csrf_protection' => true,
+            'csrf_field_name' => '_token', // Par défaut
+            'csrf_token_id' => 'registration',
         ]);
+
     }
 }

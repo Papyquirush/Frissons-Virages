@@ -17,4 +17,15 @@ class CoasterRepository extends ServiceEntityRepository
     {
         return $this->findOneBy(['idCoaster' => $coasterId]);
     }
+    public function findBySearchTerm(string $searchTerm)
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        if ($searchTerm) {
+            $qb->andWhere('c.name LIKE :searchTerm')
+                ->setParameter('searchTerm', '%' . $searchTerm . '%');
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }
