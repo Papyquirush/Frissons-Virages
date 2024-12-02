@@ -17,17 +17,16 @@
             {% for coaster in coasters %}
 
                 <li class="p-4 bg-white rounded-lg shadow-md hover:bg-gray-100">
-                    <a href="#" class="text-lg font-medium text-yellow-600 hover:underline">{{ coaster.name }}</a>
-                    {# {{ path('coaster_details', {'id': coaster.id}) }} #}
+                    <a href="{{ path('coaster_details', {'coaster': coaster.idCoaster}) }}" class="text-lg font-medium text-yellow-600 hover:underline">{{ coaster.name }}</a>
                 </li>
             {% endfor %}
         </ul>
         <div class="mt-8">
             {% if currentPage > 1 %}
-                <a href="{{ path('coaster_list', {'page': currentPage - 1}) }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400">Previous</a>
+                <a href="{{ path('coaster_list', {'page': currentPage - 1, 'q': app.request.get('q')}) }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400">Previous</a>
             {% endif %}
             {% if currentPage < totalPages %}
-                <a href="{{ path('coaster_list', {'page': currentPage + 1}) }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400">Next</a>
+                <a href="{{ path('coaster_list', {'page': currentPage + 1, 'q': app.request.get('q')}) }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400">Next</a>
             {% endif %}
         </div>
     </div>
