@@ -28,15 +28,15 @@ class CoasterController extends AbstractController
         $limit = 5;
 
 
-        $response = $this->coasterService->getCoasters();
-
-        $jsonData = json_encode($response);
-
+        $response = $this->coasterService->findAllCoasters();
+        $coastersArray = array_map(fn($coaster) => $coaster->toArray(), $response);
+        $jsonData = json_encode($coastersArray);
         $coasters = $this->coasterFactory->createMultipleFromCaptainData($jsonData);
         $totalCoasters = count($coasters);
         $totalPages = ceil($totalCoasters / $limit);
         $offset = ($page - 1) * $limit;
         $coasters = array_slice($coasters, $offset, $limit);
+
         return $this->render('index.html.twig', [
             'coasters' => $coasters,
             'currentPage' => $page,

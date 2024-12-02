@@ -2,42 +2,34 @@
 
 namespace App\Service;
 
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use App\Entity\Coaster;
+use App\Repository\CoasterRepository;
 
 class CoasterService
 {
-    private HttpClientInterface $httpClient;
-    private RequestStack $requestStack;
-    private string $token;
+    private CoasterRepository $coasterRepository;
 
-    public function __construct(HttpClientInterface $httpClient, RequestStack $requestStack)
+    public function __construct(CoasterRepository $coasterRepository)
     {
-        $this->httpClient = $httpClient;
-        $this->requestStack = $requestStack;
-        $this->token ="da006cd3-ed2b-4956-8180-2e955c01dbee";
-
+        $this->coasterRepository = $coasterRepository;
     }
 
-    public function getCoasters(): array
+    public function findAllCoasters(): array
     {
+
         $coasters = [];
-        for ($i = 1; $i <= 20; $i++) {
-            $coasters[] = $this->getCoasterById($i);
+        for ($i = 1; $i <= 40; $i++) {
+
+            $coaster = $this->findCoasterByCoasterId($i);
+            if ($coaster) {
+                $coasters[] = $coaster;
+            }
         }
         return $coasters;
-
     }
 
-    public function getCoasterById(int $id): array
+    public function findCoasterByCoasterId(int $coasterId): ?Coaster
     {
-        $response = $this->httpClient->request('GET', 'https://captaincoaster.com/api/coasters/' . $id, [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $this->token,
-            ],
-        ]);
-        return $response->toArray();
+        return $this->coasterRepository->findOneByCoasterId($coasterId);
     }
-
-
 }

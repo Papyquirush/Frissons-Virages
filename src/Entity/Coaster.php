@@ -21,15 +21,15 @@ class Coaster
     #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
-    #[ORM\ManyToOne(targetEntity: MaterialType::class)]
+    #[ORM\ManyToOne(targetEntity: MaterialType::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private MaterialType $materialType;
 
-    #[ORM\ManyToOne(targetEntity: SeatingType::class)]
+    #[ORM\ManyToOne(targetEntity: SeatingType::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private SeatingType $seatingType;
 
-    #[ORM\ManyToOne(targetEntity: Model::class)]
+    #[ORM\ManyToOne(targetEntity: Model::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private Model $model;
 
@@ -45,23 +45,23 @@ class Coaster
     #[ORM\Column(type: 'integer')]
     private int $inversionsNumber;
 
-    #[ORM\ManyToOne(targetEntity: Manufacturer::class)]
+    #[ORM\ManyToOne(targetEntity: Manufacturer::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private Manufacturer $manufacturer;
 
-    #[ORM\ManyToOne(targetEntity: Restraint::class)]
+    #[ORM\ManyToOne(targetEntity: Restraint::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private Restraint $restraint;
 
-    #[ORM\ManyToMany(targetEntity: Launches::class)]
+    #[ORM\ManyToMany(targetEntity: Launches::class, cascade: ['persist'])]
     private Collection $launches;
 
 
-    #[ORM\ManyToOne(targetEntity: Park::class)]
+    #[ORM\ManyToOne(targetEntity: Park::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private Park $park;
 
-    #[ORM\ManyToOne(targetEntity: Status::class)]
+    #[ORM\ManyToOne(targetEntity: Status::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private Status $status;
     #[ORM\Column(type: 'datetime')]
@@ -232,6 +232,32 @@ class Coaster
         return $this->mainImage;
     }
 
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'idCoaster' => $this->idCoaster,
+            'name' => $this->name,
+            'materialType' => $this->materialType->getName(),
+            'seatingType' => $this->seatingType->getName(),
+            'model' => $this->model->getName(),
+            'speed' => $this->speed,
+            'height' => $this->height,
+            'length' => $this->length,
+            'inversionsNumber' => $this->inversionsNumber,
+            'manufacturer' => $this->manufacturer->getName(),
+            'restraint' => $this->restraint->getName(),
+            'launches' => array_map(fn($launch) => $launch->getName(), $this->launches->toArray()),
+            'park' => $this->park->getName(),
+            'status' => $this->status->getName(),
+            'openingDate' => $this->openingDate->format('Y-m-d'),
+            'totalRatings' => $this->totalRatings,
+            'validDuels' => $this->validDuels,
+            'score' => $this->score,
+            'rank' => $this->rank,
+            'mainImage' => $this->mainImage,
+        ];
+    }
 
 
 }
