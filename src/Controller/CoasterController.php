@@ -43,4 +43,15 @@ class CoasterController extends AbstractController
             'totalPages' => $totalPages
         ]);
     }
+
+
+    #[Route('/carte', name: 'coaster_carte')]
+    public function map(): Response
+    {
+
+
+
+        return $this->render('carte.html.twig');
+    }
+
 }
