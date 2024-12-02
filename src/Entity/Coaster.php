@@ -232,6 +232,32 @@ class Coaster
         return $this->mainImage;
     }
 
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'idCoaster' => $this->idCoaster,
+            'name' => $this->name,
+            'materialType' => $this->materialType->getName(),
+            'seatingType' => $this->seatingType->getName(),
+            'model' => $this->model->getName(),
+            'speed' => $this->speed,
+            'height' => $this->height,
+            'length' => $this->length,
+            'inversionsNumber' => $this->inversionsNumber,
+            'manufacturer' => $this->manufacturer->getName(),
+            'restraint' => $this->restraint->getName(),
+            'launches' => array_map(fn($launch) => $launch->getName(), $this->launches->toArray()),
+            'park' => $this->park->getName(),
+            'status' => $this->status->getName(),
+            'openingDate' => $this->openingDate->format('Y-m-d'),
+            'totalRatings' => $this->totalRatings,
+            'validDuels' => $this->validDuels,
+            'score' => $this->score,
+            'rank' => $this->rank,
+            'mainImage' => $this->mainImage,
+        ];
+    }
 
 
 }
