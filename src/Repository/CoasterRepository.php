@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Coaster;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 class CoasterRepository extends ServiceEntityRepository
@@ -17,6 +18,7 @@ class CoasterRepository extends ServiceEntityRepository
     {
         return $this->findOneBy(['idCoaster' => $coasterId]);
     }
+
     public function findBySearchTerm(string $searchTerm)
     {
         $qb = $this->createQueryBuilder('c');
@@ -28,4 +30,15 @@ class CoasterRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findPaginatedCoasters(int $page, int $limit): Paginator
+    {
+        $query = $this->createQueryBuilder('c')
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        return new Paginator($query);
+    }
+
 }

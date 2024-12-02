@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Coaster;
 use App\Repository\CoasterRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class CoasterService
 {
@@ -31,5 +32,10 @@ class CoasterService
     public function findCoasterByCoasterId(int $coasterId): ?Coaster
     {
         return $this->coasterRepository->findOneByCoasterId($coasterId);
+    }
+
+    public function findPaginatedCoasters(int $page, int $limit): Paginator
+    {
+        return $this->coasterRepository->findPaginatedCoasters($page, $limit);
     }
 }

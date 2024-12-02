@@ -28,20 +28,26 @@ class CoasterController extends AbstractController
         $limit = 5;
 
 
-        $response = $this->coasterService->findAllCoasters();
-        $coastersArray = array_map(fn($coaster) => $coaster->toArray(), $response);
-        $jsonData = json_encode($coastersArray);
-        $coasters = $this->coasterFactory->createMultipleFromCaptainData($jsonData);
-        $totalCoasters = count($coasters);
+        $paginator = $this->coasterService->findPaginatedCoasters($page, $limit);
+        $totalCoasters = count($paginator);
         $totalPages = ceil($totalCoasters / $limit);
-        $offset = ($page - 1) * $limit;
-        $coasters = array_slice($coasters, $offset, $limit);
+
 
         return $this->render('index.html.twig', [
-            'coasters' => $coasters,
+            'coasters' => iterator_to_array($paginator)/*$coasters*/,
             'currentPage' => $page,
             'totalPages' => $totalPages
         ]);
+    }
+
+
+
+    #[Route('/carte', name: 'coaster_carte')]
+    public function map(): Response
+    {
+
+
+        return $this->render('carte.html.twig');
     }
 
     #[Route('/coaster/{coaster}', name: 'coaster_details')]
@@ -50,6 +56,7 @@ class CoasterController extends AbstractController
         return $this->render('details.html.twig', [
             'coaster' => $coaster
         ]);
+
     }
 
 }
