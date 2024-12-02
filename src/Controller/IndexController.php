@@ -9,10 +9,10 @@ class IndexController extends AbstractController
 {
 
 
-    /*#[Route('/', name: 'app_index')]
+    #[Route('/connexion', name: 'connexion')]
     public function index(): Response
     {
-        return $this->render('index.html.twig');
-    }*/
+        return $this->render('login.html.twig');
+    }
 
 }
