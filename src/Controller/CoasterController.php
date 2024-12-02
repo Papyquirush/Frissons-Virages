@@ -44,12 +44,23 @@ class CoasterController extends AbstractController
         ]);
     }
 
+
+
+    #[Route('/carte', name: 'coaster_carte')]
+    public function map(): Response
+    {
+
+
+
+        return $this->render('carte.html.twig');
+
     #[Route('/coaster/{coaster}', name: 'coaster_details')]
     public function showDetails(Coaster $coaster): Response
     {
         return $this->render('details.html.twig', [
             'coaster' => $coaster
         ]);
+
     }
 
 }
