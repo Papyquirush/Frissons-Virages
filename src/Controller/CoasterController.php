@@ -26,10 +26,9 @@ class CoasterController extends AbstractController
         $limit = 5;
 
 
-        $response = $this->coasterService->getCoasters();
-
-        $jsonData = json_encode($response);
-
+        $response = $this->coasterService->findAllCoasters();
+        $coastersArray = array_map(fn($coaster) => $coaster->toArray(), $response);
+        $jsonData = json_encode($coastersArray);
         $coasters = $this->coasterFactory->createMultipleFromCaptainData($jsonData);
 
         $totalCoasters = count($coasters);
