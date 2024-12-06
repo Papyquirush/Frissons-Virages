@@ -41,4 +41,52 @@ class CoasterRepository extends ServiceEntityRepository
         return new Paginator($query);
     }
 
+    public function getEveryCountries()
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT DISTINCT p.country
+            FROM App\Entity\Coaster c
+            JOIN c.park p'
+        );
+
+        $results = $query->getResult();
+        $countries = array_map(function($result) {
+            return $result['country'];
+        }, $results);
+
+        return $countries;
+    }
+
+    public function findWithFilters(array $filters): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->leftJoin('c.park', 'p')
+            ->addSelect('p');
+
+        if (!empty($filters['q'])) {
+            $qb->andWhere('c.name LIKE :name')
+                ->setParameter('name', '%' . $filters['q'] . '%');
+        }
+
+        if (!empty($filters['country'])) {
+            $qb->andWhere('p.country = :country')
+                ->setParameter('country', $filters['country']);
+        }
+
+        if (!empty($filters['materialType'])) {
+            $qb->andWhere('c.materialType = :materialType')
+                ->setParameter('materialType', $filters['materialType']);
+        }
+
+        if (!empty($filters['openingDate'])) {
+            $qb->andWhere('c.openingDate >= :openingDate')
+                ->setParameter('openingDate', new \DateTime($filters['openingDate']));
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+
+
 }

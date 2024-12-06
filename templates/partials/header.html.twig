@@ -6,8 +6,8 @@
     <div class="flex space-x-8 text-lg">
         <a>Classement mondial des coasters</a>
         <a>Carte de coasters</a>
-        <a href="">Mes favoris</a>
         {% if app.user %}
+            <a href="">Mes favoris</a>
             <a class="" href="{{ path('app_logout') }}">Se déconnecter</a>
         {% else %}
             <a class="" href="{{ path('app_login') }}">Se connecter</a>

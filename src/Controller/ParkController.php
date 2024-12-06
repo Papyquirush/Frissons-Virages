@@ -1,5 +1,4 @@
 <?php
-// src/Controller/ParkController.php
 
 namespace App\Controller;
 
@@ -32,7 +31,6 @@ class ParkController extends AbstractController
         $park = $this->parkService->findParkByName($name);
         return $this->json($park);
     }
-
 
 
     #[Route('/api/parks/{name}/coasters', name: 'api_park_coasters')]
