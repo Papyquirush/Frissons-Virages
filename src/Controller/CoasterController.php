@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Coaster;
-use App\Factory\CoasterFactory;
-use App\Repository\CoasterRepository;
-use App\Repository\MaterialTypeRepository;
+use App\Service\MaterialTypeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,22 +16,18 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class CoasterController extends AbstractController
 {
 
-    private MaterialTypeRepository $materialTypeRepository;
+
 
     public function __construct(private readonly CoasterService $coasterService,
-                                private readonly CoasterFactory $coasterFactory,
-                                MaterialTypeRepository $materialTypeRepository,
-                                CoasterRepository $coasterRepository
-    )
+                                private readonly MaterialTypeService $materialTypeService)
     {
-        $this->materialTypeRepository = $materialTypeRepository;
-        $this->coasterRepository = $coasterRepository;
+
     }
 
     
 
     #[Route('/', name: 'coaster_list')]
-    public function index(CoasterRepository $coasterRepository, Request $request): Response
+    public function index(Request $request): Response
     {
         $searchTerm = $request->query->get('q', '');
         $currentPage = $request->query->getInt('page', 1);
@@ -46,13 +40,15 @@ class CoasterController extends AbstractController
             'openingDate' => $request->query->get('openingDate'),
         ];
 
-        $coasters = $coasterRepository->findWithFilters($filters);
+
+        $coasters = $this->coasterService->findWithFilters($filters);
+
 
         $totalCoasters = count($coasters);
         $totalPages = (int) ceil($totalCoasters / $limit);
         $coasters = array_slice($coasters, ($currentPage - 1) * $limit, $limit);
-        $allCountries = $this->coasterRepository->getEveryCountries();
-        $allMaterialTypes = $this->materialTypeRepository->findAll();
+        $allCountries = $this->coasterService->getEveryCountries();
+        $allMaterialTypes = $this->materialTypeService->findAll();
 
         return $this->render('coasters/index.html.twig', [
             'coasters' => $coasters,
@@ -72,9 +68,9 @@ class CoasterController extends AbstractController
     }
 
     #[Route('/coaster/{name}', name: 'coaster_details')]
-    public function showDetails(string $name, CoasterRepository $coasterRepository): Response
+    public function showDetails(string $name): Response
     {
-        $coaster = $coasterRepository->findOneBy(['name' => $name]);
+        $coaster = $this->coasterService->findCoasterByCoasterName($name);
 
         if (!$coaster) {
             throw $this->createNotFoundException('The coaster does not exist');
@@ -84,6 +80,35 @@ class CoasterController extends AbstractController
             'coaster' => $coaster
         ]);
     }
+
+
+
+    #[Route('/favorite', name: 'favorite_list')]
+    public function listFavorite(): Response
+    {
+        $favorites = $this->coasterService->getFavorites();
+
+        return $this->render('coasters/favorites.html.twig', [
+            'favorites' => $favorites
+        ]);
+    }
+
+    #[Route('/favorite/add/{name}', name: 'favorite_add')]
+    public function addFavorite(Coaster $coaster): Response
+    {
+        $this->coasterService->addFavorite($coaster);
+
+        return $this->redirectToRoute('coaster_list');
+    }
+
+    #[Route('/favorite/remove/{name}', name: 'favorite_remove')]
+    public function removeFavorite(Coaster $coaster): Response
+    {
+        $this->coasterService->removeFavorite($coaster);
+
+        return $this->redirectToRoute('favorite_list');
+    }
+
 
 
     
