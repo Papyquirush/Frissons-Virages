@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Carte{% endblock %}
 
 {% block body %}
+<button onclick="window.history.back();" class="mt-4 px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400">Retour</button>
+    <h1 class="text-center text-4xl">Carte des parcs d'attractions</h1>
     <div id="map" class="w-full h-96 rounded-lg shadow-md"></div>
 {% endblock %}
 
