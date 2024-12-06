@@ -6,6 +6,8 @@ namespace App\Controller;
 
 use App\Entity\Coaster;
 use App\Factory\CoasterFactory;
+use App\Repository\CoasterRepository;
+use App\Repository\MaterialTypeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,27 +18,48 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class CoasterController extends AbstractController
 {
 
+    private MaterialTypeRepository $materialTypeRepository;
+
     public function __construct(private readonly CoasterService $coasterService,
-                                private readonly CoasterFactory $coasterFactory
+                                private readonly CoasterFactory $coasterFactory,
+                                MaterialTypeRepository $materialTypeRepository,
+                                CoasterRepository $coasterRepository
     )
-    {}
+    {
+        $this->materialTypeRepository = $materialTypeRepository;
+        $this->coasterRepository = $coasterRepository;
+    }
+
+    
 
     #[Route('/', name: 'coaster_list')]
-    public function index(Request $request): Response
+    public function index(CoasterRepository $coasterRepository, Request $request): Response
     {
-        $page = $request->query->getInt('page', 1);
+        $searchTerm = $request->query->get('q', '');
+        $currentPage = $request->query->getInt('page', 1);
         $limit = 5;
 
+        $filters = [
+            'q' => $request->query->get('q'),
+            'country' => $request->query->get('country'),
+            'materialType' => $request->query->get('materialType'),
+            'openingDate' => $request->query->get('openingDate'),
+        ];
 
-        $paginator = $this->coasterService->findPaginatedCoasters($page, $limit);
-        $totalCoasters = count($paginator);
-        $totalPages = ceil($totalCoasters / $limit);
+        $coasters = $coasterRepository->findWithFilters($filters);
 
+        $totalCoasters = count($coasters);
+        $totalPages = (int) ceil($totalCoasters / $limit);
+        $coasters = array_slice($coasters, ($currentPage - 1) * $limit, $limit);
+        $allCountries = $this->coasterRepository->getEveryCountries();
+        $allMaterialTypes = $this->materialTypeRepository->findAll();
 
-        return $this->render('index.html.twig', [
-            'coasters' => iterator_to_array($paginator)/*$coasters*/,
-            'currentPage' => $page,
-            'totalPages' => $totalPages
+        return $this->render('coasters/index.html.twig', [
+            'coasters' => $coasters,
+            'countries' => $allCountries,
+            'materialTypes' => $allMaterialTypes,
+            'currentPage' => $currentPage,
+            'totalPages' => $totalPages,
         ]);
     }
 
@@ -50,13 +73,20 @@ class CoasterController extends AbstractController
         return $this->render('carte.html.twig');
     }
 
-    #[Route('/coaster/{coaster}', name: 'coaster_details')]
-    public function showDetails(Coaster $coaster): Response
+    #[Route('/coaster/{name}', name: 'coaster_details')]
+    public function showDetails(string $name, CoasterRepository $coasterRepository): Response
     {
-        return $this->render('details.html.twig', [
+        $coaster = $coasterRepository->findOneBy(['name' => $name]);
+
+        if (!$coaster) {
+            throw $this->createNotFoundException('The coaster does not exist');
+        }
+
+        return $this->render('coasters/details.html.twig', [
             'coaster' => $coaster
         ]);
-
     }
 
+
+    
 }
