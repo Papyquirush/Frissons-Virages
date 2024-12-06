@@ -38,4 +38,33 @@ class CoasterService
     {
         return $this->coasterRepository->findPaginatedCoasters($page, $limit);
     }
+
+    public function addFavorite(Coaster $coaster)
+    {
+    }
+
+    public function getFavorites()
+    {
+    }
+
+    public function removeFavorite(Coaster $coaster)
+    {
+    }
+
+    public function findCoasterByCoasterName(string $name)
+    {
+        return $this->coasterRepository->findOneBy(['name' => $name]);
+    }
+
+    public function findWithFilters(array $filters)
+    {
+       return $this->coasterRepository->findWithFilters($filters);
+    }
+
+    public function getEveryCountries()
+    {
+        return $this->coasterRepository->getEveryCountries();
+    }
+
+
 }

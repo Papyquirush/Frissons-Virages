@@ -40,15 +40,6 @@ class ParkController extends AbstractController
         return $this->json($coasters);
     }
 
-
-    #[Route('/test/{name}', name: 'test')]
-    public function test(string $name): JsonResponse
-    {
-        $park = $this->parkService->findParkByName($name);
-        return $this->json($park);
-    }
-
-
     #[Route('/carte', name: 'park_carte')]
     public function map(): Response
     {
