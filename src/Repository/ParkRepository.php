@@ -28,4 +28,27 @@ class ParkRepository extends ServiceEntityRepository
         }
         return $park;
     }
+
+
+    public function findAllWithCoordinates(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.latitude IS NOT NULL')
+            ->andWhere('p.longitude IS NOT NULL')
+            ->andWhere('p.latitude != 0 AND p.longitude != 0')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    public function findByName(string $name): ?Park
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.name = :name')
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+
 }

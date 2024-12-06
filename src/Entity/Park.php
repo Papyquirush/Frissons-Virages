@@ -72,6 +72,22 @@ class Park
         return $this->longitude;
     }
 
+    public function setCountry(string $country): void
+    {
+        $this->country = $country;
+    }
+
+    public function setLatitude(float $latitude): void
+    {
+        $this->latitude = $latitude;
+    }
+
+    public function setLongitude(float $longitude): void
+    {
+        $this->longitude = $longitude;
+    }
+
+
 }
 
 

@@ -63,8 +63,6 @@ class CoasterController extends AbstractController
         ]);
     }
 
-
-
     #[Route('/carte', name: 'coaster_carte')]
     public function map(): Response
     {
