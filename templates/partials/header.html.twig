@@ -1,11 +1,18 @@
-<header>
+<header class="mx-[10%]">
 <div class="flex space justify-between px-8 items-center">
-    <img src="{{ asset('images/logoFetVi.png') }}" alt="Logo d'UTP" class="w-[10%] h-[10%]">
+    <a href="{{ path('coaster_list') }}" class="w-[10%] h-[10%]">
+        <img src="{{ asset('images/logoFetVi.png') }}" alt="Logo de Frissons et Virages" class="">
+    </a>
     <div class="flex space-x-8 text-lg">
         <a>Classement mondial des coasters</a>
         <a>Carte de coasters</a>
-        <a>Mes favoris</a>
-        <a>Se connecter</a>
+        {% if app.user %}
+            <a href="">Mes favoris</a>
+            <a class="" href="{{ path('app_logout') }}">Se déconnecter</a>
+        {% else %}
+            <a class="" href="{{ path('app_login') }}">Se connecter</a>
+            <a class="" href="{{ path('register') }}">Créer un compte</a>
+        {% endif %}
     </div>
 </div>
 </header>
