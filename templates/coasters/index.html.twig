@@ -25,7 +25,9 @@
 				<select name="materialType" class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500">
 					<option value="">-- Type de matériau --</option>
 					{% for materialType in materialTypes %}
-						<option value="{{ materialType }}" {% if app.request.get('materialType') == materialType %} selected {% endif %}>{{ materialType }}</option>
+						<option value="{{ materialType.id }}" {% if app.request.get('materialType') == materialType.id %} selected {% endif %}>
+							{{ materialType.name|trans({}, 'material') }}
+						</option>
 					{% endfor %}
 				</select>
 			</div>
