@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Entity\Coaster;
 use App\Factory\CoasterFactory;
 use Doctrine\ORM\EntityManagerInterface;
 
