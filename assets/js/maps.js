@@ -10,14 +10,43 @@ window.initMap = function () {
 
     const map = new google.maps.Map(mapElement, {
         center: defaultLocation,
-        zoom: 12,
+        zoom: 6,
     });
 
-    new google.maps.Marker({
-        position: defaultLocation,
-        map: map,
-        title: 'Hello Paris!',
-    });
+    fetch('/api/parks')
+        .then(response => response.json())
+        .then(parks => {
+            parks.forEach(park => {
+                const marker = new google.maps.Marker({
+                    position: { lat: park.latitude, lng: park.longitude },
+                    map: map,
+                    title: park.name,
+                });
+
+                const infoWindow = new google.maps.InfoWindow();
+
+                marker.addListener('click', () => {
+                    fetch(`/api/parks/${park.name}/coasters`)
+                        .then(response => response.json())
+                        .then(coasters => {
+                            const content = `
+                                <h3><strong>${park.name}</strong></h3>
+                                <ul>
+                                    ${coasters.map(coaster => `<li>${coaster.name}</li>`).join('')}
+                                </ul>
+                            `;
+                            infoWindow.setContent(content);
+                            infoWindow.open(map, marker);
+                        })
+                        .catch(error => {
+                            console.error('Erreur lors de la récupération des coasters:', error);
+                        });
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des parcs:', error);
+        });
 };
 
 function loadGoogleMaps(apiKey) {

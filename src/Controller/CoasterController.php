@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Coaster;
-use App\Factory\CoasterFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +16,7 @@ class CoasterController extends AbstractController
 {
 
     public function __construct(private readonly CoasterService $coasterService,
-                                private readonly CoasterFactory $coasterFactory
+
     )
     {}
 
@@ -38,16 +37,6 @@ class CoasterController extends AbstractController
             'currentPage' => $page,
             'totalPages' => $totalPages
         ]);
-    }
-
-
-
-    #[Route('/carte', name: 'coaster_carte')]
-    public function map(): Response
-    {
-
-
-        return $this->render('carte.html.twig');
     }
 
     #[Route('/coaster/{coaster}', name: 'coaster_details')]
