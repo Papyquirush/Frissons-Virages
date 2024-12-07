@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -57,8 +58,8 @@ class ParkController extends AbstractController
     public function addFavoritePark(string $name): Response
     {
         $user = $this->getUser();
-        if (!$user instanceof \App\Entity\User) {
-            throw new \LogicException('The user is not an instance of \App\Entity\User.');
+        if (!$user instanceof User) {
+            $this->redirectToRoute('app_login');
         }
         $this->parkService->addFavoritePark($name, $user);
         return $this->redirectToRoute('park_carte_id', ['name' => $name]);
@@ -68,8 +69,8 @@ class ParkController extends AbstractController
     public function removeFavoritePark(string $name): Response
     {
         $user = $this->getUser();
-        if (!$user instanceof \App\Entity\User) {
-            throw new \LogicException('The user is not an instance of \App\Entity\User.');
+        if (!$user instanceof User) {
+            $this->redirectToRoute('app_login');
         }
         $this->parkService->removeFavoritePark($name, $user);
         return $this->redirectToRoute('park_carte_id', ['name' => $name]);

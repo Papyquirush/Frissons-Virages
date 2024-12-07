@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Entity\User;
 use App\Service\CoasterService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,8 +26,8 @@ class FavoriteController extends AbstractController
     public function getFavoriteCoaster(): Response
     {
         $user = $this->getUser();
-        if (!$user instanceof \App\Entity\User) {
-            throw new \LogicException('The user is not an instance of \App\Entity\User.');
+        if (!$user instanceof User) {
+            $this->redirectToRoute('app_login');
         }
         $coasters = $this->coasterService->getFavoriteCoaster($user);
 
@@ -41,8 +42,8 @@ class FavoriteController extends AbstractController
     {
 
         $user = $this->getUser();
-        if (!$user instanceof \App\Entity\User) {
-            throw new \LogicException('The user is not an instance of \App\Entity\User.');
+        if (!$user instanceof User) {
+             $this->redirectToRoute('app_login');
         }
         $parks = $this->coasterService->getFavoritePark($user);
 

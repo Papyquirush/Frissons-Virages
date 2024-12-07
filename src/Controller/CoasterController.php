@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Service\MaterialTypeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,10 +50,12 @@ class CoasterController extends AbstractController
         $allCountries = $this->coasterService->getEveryCountries();
         $allMaterialTypes = $this->materialTypeService->findAll();
         $user = $this->getUser();
-        if (!$user instanceof \App\Entity\User) {
-            throw new \LogicException('The user is not an instance of \App\Entity\User.');
+        if ($user instanceof User) {
+            $favoriteCoasters = $this->coasterService->getFavoriteCoaster($user);
+        }else {
+            $favoriteCoasters = [];
         }
-        $favoriteCoasters = $this->coasterService->getFavoriteCoaster($user);
+
 
         return $this->render('coasters/index.html.twig', [
             'coasters' => $coasters,
@@ -82,8 +85,8 @@ class CoasterController extends AbstractController
     public function addFavoriteCoaster(string $name): Response
     {
         $user = $this->getUser();
-        if (!$user instanceof \App\Entity\User) {
-            throw new \LogicException('The user is not an instance of \App\Entity\User.');
+        if (!$user instanceof User) {
+            $this->redirectToRoute('app_login');
         }
         $this->coasterService->addFavoriteCoaster($name, $user);
 
@@ -94,8 +97,8 @@ class CoasterController extends AbstractController
     public function removeFavoriteCoaster(string $name): Response
     {
         $user = $this->getUser();
-        if (!$user instanceof \App\Entity\User) {
-            throw new \LogicException('The user is not an instance of \App\Entity\User.');
+        if (!$user instanceof User) {
+            $this->redirectToRoute('app_login');
         }
         $this->coasterService->removeFavoriteCoaster($name, $user);
 
