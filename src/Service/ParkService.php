@@ -113,4 +113,15 @@ class ParkService
         return $this->parkRepository->findAllCountries();
     }
 
+    public function addFavoritePark(string $name, \App\Entity\User $user): void
+    {
+        $this->parkRepository->addFavoritePark($name, $user);
+    }
+
+    public function removeFavoritePark(string $name, \App\Entity\User $user): void
+    {
+        $this->parkRepository->removeFavoritePark($name, $user);
+    }
+
+
 }

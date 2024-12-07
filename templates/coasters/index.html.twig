@@ -66,7 +66,19 @@
 						<div>
 							<h3 class="text-xl font-semibold">{{ coaster.name }}</h3>
 							<p>{{ coaster.park.name }}</p>
+							{% if app.user %}
+								{% if coaster in favoriteCoasters %}
+									<a href="{{ path('favorite_coaster_remove', { name: coaster.name }) }}" class="text-red-500 hover:underline ml-4">
+										Remove
+									</a>
+								{% else %}
+									<a href="{{ path('favorite_coaster_add', { name: coaster.name }) }}" class="text-green-500 hover:underline ml-4">
+										Add to Favorites
+									</a>
+								{% endif %}
+							{% endif %}
 						</div>
+
 					</li>
 				</a>
 			{% endfor %}

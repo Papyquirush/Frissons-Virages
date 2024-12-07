@@ -134,5 +134,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->park;
     }
 
+    public function addCoaster(?Coaster $coaster): static
+    {
+        if ($coaster && !$this->coaster->contains($coaster)) {
+            $this->coaster->add($coaster);
+        }
+
+        return $this;
+    }
+
+    public function removeCoaster(?object $coaster): void
+    {
+        if($coaster && $this->coaster->contains($coaster)) {
+            $this->coaster->removeElement($coaster);
+        }
+    }
+
+    public function addPark(?object $park): static
+    {
+        if ($park && !$this->park->contains($park)) {
+            $this->park->add($park);
+        }
+
+        return $this;
+    }
+
+    public function removePark(?object $park): void
+    {
+        if($park && $this->park->contains($park)) {
+            $this->park->removeElement($park);
+        }
+    }
+
+
+
 
 }
