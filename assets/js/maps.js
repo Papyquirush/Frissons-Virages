@@ -1,3 +1,5 @@
+import { MarkerClusterer } from '@googlemaps/markerclusterer';
+
 window.initMap = function () {
     const defaultLocation = { lat: 48.8566, lng: 2.3522 };
 
@@ -16,10 +18,9 @@ window.initMap = function () {
     fetch('/api/parks')
         .then(response => response.json())
         .then(parks => {
-            parks.forEach(park => {
+            const markers = parks.map(park => {
                 const marker = new google.maps.Marker({
                     position: { lat: park.latitude, lng: park.longitude },
-                    map: map,
                     title: park.name,
                 });
 
@@ -30,9 +31,17 @@ window.initMap = function () {
                         .then(response => response.json())
                         .then(coasters => {
                             const content = `
-                                <h3><strong>${park.name}</strong></h3>
-                                <ul>
-                                    ${coasters.map(coaster => `<li>${coaster.name}</li>`).join('')}
+                                <h3 class="font-bold text-lg">${park.name}</h3>
+                                <ul class="list-disc pl-5">
+                                    ${coasters.map(coaster => `
+                                        <li class="flex items-center">
+                                            ${coaster.name}
+                                            <span class="ml-2 inline-block w-3 h-3 rounded-full ${
+                                coaster.status.name === 'status.operating' ? 'bg-green-500' :
+                                    coaster.status.name === 'status.closed.definitely' ? 'bg-red-500' : 'bg-orange-500'
+                            }"></span>
+                                        </li>
+                                    `).join('')}
                                 </ul>
                             `;
                             infoWindow.setContent(content);
@@ -42,7 +51,12 @@ window.initMap = function () {
                             console.error('Erreur lors de la récupération des coasters:', error);
                         });
                 });
+
+                return marker;
             });
+
+            // Utiliser MarkerClusterer pour gérer les clusters de marqueurs
+            new MarkerClusterer({ map, markers });
         })
         .catch(error => {
             console.error('Erreur lors de la récupération des parcs:', error);
