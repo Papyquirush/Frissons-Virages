@@ -5,7 +5,7 @@
     </a>
     <div class="flex space-x-8 text-lg">
         <a>Classement mondial des coasters</a>
-        <a>Carte de coasters</a>
+        <a href="{{ path('park_carte')}}">Carte de coasters</a>
         {% if app.user %}
             <a href="{{ path('favorite_coaster_list') }}">Mes favoris</a>
             <a class="" href="{{ path('app_logout') }}">Se déconnecter</a>
