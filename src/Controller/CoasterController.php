@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Coaster;
 use App\Service\MaterialTypeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\CoasterService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 
 class CoasterController extends AbstractController
 {
@@ -49,6 +48,11 @@ class CoasterController extends AbstractController
         $coasters = array_slice($coasters, ($currentPage - 1) * $limit, $limit);
         $allCountries = $this->coasterService->getEveryCountries();
         $allMaterialTypes = $this->materialTypeService->findAll();
+        $user = $this->getUser();
+        if (!$user instanceof \App\Entity\User) {
+            throw new \LogicException('The user is not an instance of \App\Entity\User.');
+        }
+        $favoriteCoasters = $this->coasterService->getFavoriteCoaster($user);
 
         return $this->render('coasters/index.html.twig', [
             'coasters' => $coasters,
@@ -56,15 +60,8 @@ class CoasterController extends AbstractController
             'materialTypes' => $allMaterialTypes,
             'currentPage' => $currentPage,
             'totalPages' => $totalPages,
+            'favoriteCoasters' => $favoriteCoasters,
         ]);
-    }
-
-    #[Route('/carte', name: 'coaster_carte')]
-    public function map(): Response
-    {
-
-
-        return $this->render('carte.html.twig');
     }
 
     #[Route('/coaster/{name}', name: 'coaster_details')]
@@ -81,35 +78,30 @@ class CoasterController extends AbstractController
         ]);
     }
 
-
-
-    #[Route('/favorite', name: 'favorite_list')]
-    public function listFavorite(): Response
+    #[Route('/favorite/coaster/add/{name}', name: 'favorite_coaster_add')]
+    public function addFavoriteCoaster(string $name): Response
     {
-        $favorites = $this->coasterService->getFavorites();
+        $user = $this->getUser();
+        if (!$user instanceof \App\Entity\User) {
+            throw new \LogicException('The user is not an instance of \App\Entity\User.');
+        }
+        $this->coasterService->addFavoriteCoaster($name, $user);
 
-        return $this->render('coasters/favorites.html.twig', [
-            'favorites' => $favorites
-        ]);
+        return $this->redirectToRoute('favorite_coaster_list');
     }
 
-    #[Route('/favorite/add/{name}', name: 'favorite_add')]
-    public function addFavorite(Coaster $coaster): Response
+    #[Route('/favorite/coaster/remove/{name}', name: 'favorite_coaster_remove')]
+    public function removeFavoriteCoaster(string $name): Response
     {
-        $this->coasterService->addFavorite($coaster);
+        $user = $this->getUser();
+        if (!$user instanceof \App\Entity\User) {
+            throw new \LogicException('The user is not an instance of \App\Entity\User.');
+        }
+        $this->coasterService->removeFavoriteCoaster($name, $user);
 
-        return $this->redirectToRoute('coaster_list');
-    }
-
-    #[Route('/favorite/remove/{name}', name: 'favorite_remove')]
-    public function removeFavorite(Coaster $coaster): Response
-    {
-        $this->coasterService->removeFavorite($coaster);
-
-        return $this->redirectToRoute('favorite_list');
+        return $this->redirectToRoute('favorite_coaster_list');
     }
 
 
 
-    
 }
