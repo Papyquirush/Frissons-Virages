@@ -8,7 +8,7 @@
 
         <div class="overflow-x-auto bg-white shadow-lg rounded-lg">
             <table class="min-w-full table-auto text-sm text-left text-gray-500">
-                <thead class="bg-gray-800 text-black">
+                <thead class="bg-gray-800 text-white">
                     <tr>
                         <th class="px-4 py-2 text-center">Rang</th>
                         <th class="px-4 py-2">Nom</th>
@@ -41,13 +41,13 @@
 
         <div class="flex justify-between items-center mt-6">
             {% if currentPage > 1 %}
-                <a href="{{ path('coaster_list', app.request.query.all|merge({'page': currentPage - 1})) }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400">Précédent</a>
+                <a href="{{ path('coaster_ranking', app.request.query.all|merge({'page': currentPage - 1})) }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400">Précédent</a>
             {% else %}
                 <span class="px-4 py-2 bg-gray-200 text-gray-400 rounded-md">Précédent</span>
             {% endif %}
             
             {% if currentPage < totalPages %}
-                <a href="{{ path('coaster_list', app.request.query.all|merge({'page': currentPage + 1})) }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400">Suivant</a>
+                <a href="{{ path('coaster_ranking', app.request.query.all|merge({'page': currentPage + 1})) }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400">Suivant</a>
             {% else %}
                 <span class="px-4 py-2 bg-gray-200 text-gray-400 rounded-md">Suivant</span>
             {% endif %}

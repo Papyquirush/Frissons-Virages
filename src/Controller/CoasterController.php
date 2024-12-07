@@ -108,7 +108,7 @@ class CoasterController extends AbstractController
         return $this->redirectToRoute('favorite_coaster_list');
     }
 
-    #[Route('/coasters', name: 'coaster_ranking')]
+    #[Route('/ranking', name: 'coaster_ranking')]
     public function ranking(Request $request)
     {
         $currentPage = $request->query->getInt('page', 1); 
