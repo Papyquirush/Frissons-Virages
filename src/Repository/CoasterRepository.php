@@ -62,8 +62,10 @@ class CoasterRepository extends ServiceEntityRepository
     public function findWithFilters(array $filters): array
     {
         $qb = $this->createQueryBuilder('c')
+            ->leftJoin('c.materialType', 'mt')
             ->leftJoin('c.park', 'p')
-            ->addSelect('p');
+            ->addSelect('p')
+            ->addSelect('mt');
 
         if (!empty($filters['q'])) {
             $qb->andWhere('c.name LIKE :name')
@@ -76,7 +78,7 @@ class CoasterRepository extends ServiceEntityRepository
         }
 
         if (!empty($filters['materialType'])) {
-            $qb->andWhere('c.materialType = :materialType')
+            $qb->andWhere('mt.id = :materialType')
                 ->setParameter('materialType', $filters['materialType']);
         }
 
@@ -86,6 +88,16 @@ class CoasterRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findRankedCoasters(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.rank != :rank')
+            ->setParameter('rank', 0)
+            ->orderBy('c.rank', 'ASC')
+            ->getQuery()
+            ->getResult();
     }
 
 

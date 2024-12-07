@@ -4,7 +4,7 @@
         <img src="{{ asset('images/logoFetVi.png') }}" alt="Logo de Frissons et Virages" class="">
     </a>
     <div class="flex space-x-8 text-lg">
-        <a>Classement mondial des coasters</a>
+        <a href="{{ path('coaster_ranking')}}">Classement mondial des coasters</a>
         <a href="{{ path('park_carte')}}">Carte de coasters</a>
         {% if app.user %}
             <a href="{{ path('favorite_coaster_list') }}">Mes favoris</a>

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Park;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class ParkRepository extends ServiceEntityRepository
 {
@@ -50,6 +51,40 @@ class ParkRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    public function findPaginated(int $page = 1, int $limit = 10, ?string $search = null, ?string $country = null): array
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        if ($search) {
+            $qb->andWhere('p.name LIKE :search')
+               ->setParameter('search', '%' . $search . '%');
+        }
+
+        if ($country) {
+            $qb->andWhere('p.country = :country')
+               ->setParameter('country', $country);
+        }
+
+        $qb->setFirstResult(($page - 1) * $limit)
+           ->setMaxResults($limit);
+
+        $paginator = new Paginator($qb);
+
+        return [
+            'parks' => iterator_to_array($paginator->getIterator()),
+            'totalItems' => $paginator->count()
+        ];
+    }
+
+      public function findAllCountries(): array
+      {
+          return $this->createQueryBuilder('p')
+              ->select('DISTINCT p.country')
+              ->orderBy('p.country', 'ASC')
+              ->getQuery()
+              ->getSingleColumnResult();
+      }
+
     public function removeFavoritePark(string $name, \App\Entity\User $user): void
     {
         $park = $this->findOneBy(['name' => $name]);
@@ -67,6 +102,7 @@ class ParkRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
     }
+
 
 
 }

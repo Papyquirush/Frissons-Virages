@@ -8,15 +8,51 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\ParkService;
+use Symfony\Component\HttpFoundation\Request;
 
 class ParkController extends AbstractController
 {
-    private ParkService $parkService;
 
-    public function __construct(ParkService $parkService)
+    public function __construct(private readonly ParkService $parkService)
     {
-        $this->parkService = $parkService;
     }
+
+
+    #[Route('/parks', name: 'park_list')]
+    public function index(Request $request): Response
+    {
+        $currentPage = $request->query->getInt('page', 1);
+        $search = $request->query->get('q');
+        $country = $request->query->get('country');
+        $limit = 10;
+        
+        $result = $this->parkService->getPaginatedParks($currentPage, $limit, $search, $country);
+        $countries = $this->parkService->getAllCountries();
+
+        $totalPages = (int) ceil($result['totalItems'] / $limit);
+
+        return $this->render('parks/index.html.twig', [
+            'parks' => $result['parks'],
+            'countries' => $countries,
+            'currentPage' => $currentPage,
+            'totalPages' => $totalPages,
+        ]);
+    }
+
+    #[Route('/park/{name}', name: 'park_details')]
+    public function showDetails(string $name): Response
+    {
+        $park = $this->parkService->findParkByName($name);
+
+        if (!$park) {
+            throw $this->createNotFoundException('The park does not exist');
+        };
+        return $this->render('parks/details.html.twig', [
+            'park' => $park
+        ]);
+    }
+
+
 
     #[Route('/api/parks', name: 'api_parks')]
     public function getParks(): JsonResponse

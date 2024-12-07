@@ -9,22 +9,21 @@ use App\Service\MaterialTypeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\CoasterService;
 
 
 class CoasterController extends AbstractController
 {
-
-
+    private EntityManagerInterface $entityManager;
 
     public function __construct(private readonly CoasterService $coasterService,
+                                EntityManagerInterface $entityManager,
                                 private readonly MaterialTypeService $materialTypeService)
     {
-
+        $this->entityManager = $entityManager;
     }
-
-    
 
     #[Route('/', name: 'coaster_list')]
     public function index(Request $request): Response
@@ -105,6 +104,23 @@ class CoasterController extends AbstractController
         return $this->redirectToRoute('favorite_coaster_list');
     }
 
+    #[Route('/coasters', name: 'coaster_ranking')]
+    public function ranking(Request $request)
+    {
+        $currentPage = $request->query->getInt('page', 1); 
+        $limit = 10; 
+
+        $coasters= $this->coasterService->findRankedCoasters();
+        $totalCoasters = count($coasters);
+        $totalPages = ceil($totalCoasters / $limit);
 
 
+        $coasters = array_slice($coasters, ($currentPage - 1) * $limit, $limit);
+
+        return $this->render('ranking/index.html.twig', [
+            'coasters' => $coasters,
+            'currentPage' => $currentPage,
+            'totalPages' => $totalPages,
+        ]);
+    }
 }
