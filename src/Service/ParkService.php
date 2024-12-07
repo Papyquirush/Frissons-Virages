@@ -44,22 +44,39 @@ class ParkService
 
 
     public function findParkByName(string $name): ?array
-    {
-        $park = $this->parkRepository->findOneBy(['name' => $name]);
+{
+    $park = $this->parkRepository->findOneBy(['name' => $name]);
 
-        if (!$park) {
-            return [];
-        }
-        return [
-            'id' => $park->getId(),
-            'name' => $park->getName(),
-            'latitude' => $park->getLatitude(),
-            'longitude' => $park->getLongitude(),
-        ];
-
+    if (!$park) {
+        return [];
     }
 
+    $coasters = $this->coasterRepository->findBy(['park' => $park]);
+    
+    return [
+        'id' => $park->getId(),
+        'name' => $park->getName(),
+        'country' => $park->getCountry(),
+        'latitude' => $park->getLatitude(),
+        'longitude' => $park->getLongitude(),
+        'coasters' => array_map(function($coaster) {
+            return [
+                'name' => $coaster->getName(),
+                'mainImage' => $coaster->getMainImage(),
+                'materialType' => [
+                    'name' => $coaster->getMaterialType()->getName()
+                ],
+                'height' => $coaster->getHeight()
+            ];
+        }, $coasters)
+    ];
+}
 
+    public function getAllParks(): array
+    {
+        return $this->parkRepository->findAll();
+    }
+    
 
     public function findParkById(int $id): ?array
     {
@@ -86,5 +103,14 @@ class ParkService
         return $data;
     }
 
+    public function getPaginatedParks(int $page = 1, int $limit = 10, ?string $search = null, ?string $country = null): array
+    {
+        return $this->parkRepository->findPaginated($page, $limit, $search, $country);
+    }
+
+    public function getAllCountries(): array
+    {
+        return $this->parkRepository->findAllCountries();
+    }
 
 }

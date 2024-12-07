@@ -66,5 +66,9 @@ class CoasterService
         return $this->coasterRepository->getEveryCountries();
     }
 
+    public function findRankedCoasters()
+    {
+        return $this->coasterRepository->findRankedCoasters();
+    }
 
 }

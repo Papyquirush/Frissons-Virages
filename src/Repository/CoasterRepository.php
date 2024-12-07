@@ -89,6 +89,16 @@ class CoasterRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findRankedCoasters(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.rank != :rank')
+            ->setParameter('rank', 0)
+            ->orderBy('c.rank', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 
 
 }
