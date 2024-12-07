@@ -4,8 +4,10 @@
 
 namespace App\Service;
 
+use App\Entity\User;
 use App\Repository\ParkRepository;
 use App\Repository\CoasterRepository;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -113,15 +115,21 @@ class ParkService
         return $this->parkRepository->findAllCountries();
     }
 
-    public function addFavoritePark(string $name, \App\Entity\User $user): void
+    public function addFavoritePark(string $name, User $user): void
     {
         $this->parkRepository->addFavoritePark($name, $user);
     }
 
-    public function removeFavoritePark(string $name, \App\Entity\User $user): void
+    public function removeFavoritePark(string $name, User $user): void
     {
         $this->parkRepository->removeFavoritePark($name, $user);
     }
+
+    public function getFavoriteParks(User $user): Collection
+    {
+        return $user->getPark();
+    }
+
 
 
 }
