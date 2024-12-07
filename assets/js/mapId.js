@@ -37,11 +37,19 @@ window.initMap = function () {
                     .then(response => response.json())
                     .then(coasters => {
                         const content = `
-                            <h3><strong>${park.name}</strong></h3>
-                            <ul>
-                                ${coasters.map(coaster => `<li>${coaster.name}</li>`).join('')}
-                            </ul>
-                        `;
+                                <h3 class="font-bold text-lg">${park.name}</h3>
+                                <ul class="list-disc pl-5">
+                                    ${coasters.map(coaster => `
+                                        <li class="flex items-center">
+                                            ${coaster.name}
+                                            <span class="ml-2 inline-block w-3 h-3 rounded-full ${
+                            coaster.status.name === 'status.operating' ? 'bg-green-500' :
+                                coaster.status.name === 'status.closed.definitely' ? 'bg-red-500' : 'bg-orange-500'
+                        }"></span>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            `;
                         infoWindow.setContent(content);
                         infoWindow.open(map, marker);
                     })
