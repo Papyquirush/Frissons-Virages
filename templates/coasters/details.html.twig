@@ -59,11 +59,11 @@
 			{% if app.user %}
 				{% if coaster in favoriteCoasters %}
 					<a href="{{ path('favorite_coaster_remove', { name: coaster.name }) }}" class="text-red-500 hover:underline ml-4">
-						Remove
+						Supprimer des favoris
 					</a>
 				{% else %}
 					<a href="{{ path('favorite_coaster_add', { name: coaster.name }) }}" class="text-green-500 hover:underline ml-4">
-						Add to Favorites
+						Ajouter aux favoris
 					</a>
 				{% endif %}
 			{% endif %}
