@@ -50,7 +50,7 @@
 				</div>
 				<div class="mb-4 space-y-4">
 					<h2 class="text-2xl font-semibold mb-2 underline ">Le parc :</h2>
-					<p class="text-lg">{{ coaster.park.name }}</p>
+					<p class="text-lg text-center p-4 border"><a href="{{ path('park_details', {'name': coaster.park.name}) }}">{{ coaster.park.name }}</a></p>
 					<p class="text-lg">{{ coaster.park.country|trans({}, 'countries') }}</p>
 
 				</div>

@@ -75,5 +75,9 @@ class CoasterService
         return $this->coasterRepository->getFavoritePark($user);
     }
 
+    public function findRankedCoasters()
+    {
+        return $this->coasterRepository->findRankedCoasters();
+    }
 
 }

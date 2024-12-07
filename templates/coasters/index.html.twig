@@ -4,15 +4,34 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container mx-auto p-4">
-		<div>
-			<a href="{{ path('coaster_list') }}">Coasters</a>
-			{#            <a href="{{ path('park_list') }}">Parcs</a> #}
+	<div class="container mx-auto p-4 text-4xl">
+		<div class="w-full flex justify-around mt-4">
+			<a href="{{ path('coaster_list') }}" 
+			class="p-4 rounded-lg text-black font-semibold shadow-md 
+					{% if app.request.get('_route') == 'coaster_list' %}
+						bg-yellow-500 hover:bg-yellow-600
+					{% else %}
+						bg-gray-500 hover:bg-gray-600
+					{% endif %}">
+				Coasters
+			</a>
+			<a href="{{ path('park_list') }}" 
+			class="p-4 rounded-lg text-black font-semibold shadow-md 
+					{% if app.request.get('_route') == 'park_list' %}
+						bg-yellow-500 hover:bg-yellow-600
+					{% else %}
+						bg-gray-500 hover:bg-gray-600
+					{% endif %}">
+				Parcs
+			</a>
 		</div>
 		<h1 class="text-3xl font-bold mb-4">Rechercher un coaster :</h1>
 
 		<form method="get" action="{{ path('coaster_list') }}" class="flex justify-around">
-
+			<div class="flex items-center w-full">
+				<input type="text" name="q" placeholder="Nom du coaster" value="{{ app.request.query.get('q') }}" 
+					class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+			</div>
 			<div class="flex items-center w-full">
 				<select name="country" class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500">
 					<option value="">-- Pays --</option>
@@ -25,7 +44,9 @@
 				<select name="materialType" class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500">
 					<option value="">-- Type de matériau --</option>
 					{% for materialType in materialTypes %}
-						<option value="{{ materialType }}" {% if app.request.get('materialType') == materialType %} selected {% endif %}>{{ materialType }}</option>
+						<option value="{{ materialType.id }}" {% if app.request.get('materialType') == materialType.id %} selected {% endif %}>
+							{{ materialType.name|trans({}, 'material') }}
+						</option>
 					{% endfor %}
 				</select>
 			</div>
