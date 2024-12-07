@@ -30,11 +30,11 @@
                 {% if selectedCoaster1 %}
                     <div class="space-y-6">
                         <div class="aspect-w-16 aspect-h-9">
-                            <img 
-                                src="{{ selectedCoaster1.mainImage }}" 
-                                alt="{{ selectedCoaster1.name }}"
-                                class="object-cover w-full h-64 rounded-lg"
-                            >
+                            {% if selectedCoaster1.mainImage != "https://pictures.captaincoaster.com/280x210/" %}
+                                <img src="{{ selectedCoaster1.mainImage }}" alt="{{ selectedCoaster1.name }}" class="object-cover w-full h-64 rounded-lg">
+                            {% else %}
+                                <img src="{{ asset('images/logoFetVi.png') }}" alt="{{ selectedCoaster1.name }}" class="object-cover w-full h-64 rounded-lg">
+                            {% endif %}
                         </div>
                         
                         <h2 class="text-2xl font-bold text-gray-900">{{ selectedCoaster1.name }}</h2>
@@ -124,11 +124,12 @@
                 {% if selectedCoaster2 %}
                     <div class="space-y-6">
                         <div class="aspect-w-16 aspect-h-9">
-                            <img 
-                                src="{{ selectedCoaster2.mainImage }}" 
-                                alt="{{ selectedCoaster2.name }}"
-                                class="object-cover w-full h-64 rounded-lg"
-                            >
+                        {% if selectedCoaster2.mainImage != "https://pictures.captaincoaster.com/280x210/" %}
+                                <img src="{{ selectedCoaster2.mainImage }}" alt="{{ selectedCoaster2.name }}" class="object-cover w-full h-64 rounded-lg">
+                            {% else %}
+                                <img src="{{ asset('images/logoFetVi.png') }}" alt="{{ selectedCoaster2.name }}" class="object-cover w-full h-64 rounded-lg">
+                            {% endif %}
+                           
                         </div>
                         
                         <h2 class="text-2xl font-bold text-gray-900">{{ selectedCoaster2.name }}</h2>

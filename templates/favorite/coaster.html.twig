@@ -21,7 +21,13 @@
 
                     <a href="{{ path('coaster_details', {'name': coaster.name}) }}" class="text-xl">
                         <li class="p-4 flex space-x-4 bg-white rounded-lg shadow-md hover:bg-gray-100 items-center">
-                            <img src="{{ coaster.mainImage }}" alt="Image du coaster" class="w-40 h-20 rounded-lg">
+                            
+                            {% if coaster.mainImage != "https://pictures.captaincoaster.com/280x210/" %}
+                               <img src="{{ coaster.mainImage }}" alt="Image du coaster" class="w-40 h-20 rounded-lg">
+                            {% else %}
+                            <img src="{{ asset('images/logoFetVi.png') }}" alt="Image du coaster" class="w-40 h-20 rounded-lg"> 
+                            {% endif %}
+                            
                             <div class="flex justify-between w-full">
                                 <div>
                                     <h3 class=" font-semibold">{{ coaster.name }}</h3>
@@ -29,9 +35,9 @@
                                 </div>
                                 <div>
 
-                                            <a href="{{ path('favorite_coaster_remove', { name: coaster.name }) }}" class="text-red-500 hover:underline ml-4">
-                                                Supprimer des favoris
-                                            </a>
+                                    <a href="{{ path('favorite_coaster_remove', { name: coaster.name }) }}" class="text-red-500 hover:underline ml-4">
+                                        Supprimer des favoris
+                                    </a>
 
                                 </div>
                             </div>
