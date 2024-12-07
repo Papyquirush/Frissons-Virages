@@ -127,4 +127,28 @@ class CoasterController extends AbstractController
             'totalPages' => $totalPages,
         ]);
     }
+
+    #[Route('/versus', name: 'coaster_versus')]
+    public function versus(Request $request): Response
+    {
+        $coasters = $this->coasterService->findAllCoasters();
+        $selectedCoaster1 = null;
+        $selectedCoaster2 = null;
+        
+        $coaster1Id = $request->query->get('coaster1');
+        $coaster2Id = $request->query->get('coaster2');
+        
+        if ($coaster1Id) {
+            $selectedCoaster1 = $this->coasterService->findCoasterByCoasterName($coaster1Id);
+        }
+        if ($coaster2Id) {
+            $selectedCoaster2 = $this->coasterService->findCoasterByCoasterName($coaster2Id);
+        }
+        
+        return $this->render('versus/index.html.twig', [
+            'coasters' => $coasters,
+            'selectedCoaster1' => $selectedCoaster1,
+            'selectedCoaster2' => $selectedCoaster2
+        ]);
+    }
 }

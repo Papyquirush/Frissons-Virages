@@ -91,6 +91,13 @@ class CoasterRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findRankedCoasters(): array
     {
         return $this->createQueryBuilder('c')
