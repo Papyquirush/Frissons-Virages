@@ -1,21 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Favorite Coasters{% endblock %}
+{% block title %}Favorite Parks{% endblock %}
 
 {% block body %}
-    <h1>Favorite Coasters</h1>
+    <div class="container mx-auto p-4">
+        <h1 class="text-2xl font-bold mb-4">Favorite Parks</h1>
 
-    {% if parks is empty %}
-        <p>You have no favorite coasters.</p>
-    {% else %}
-        <ul>
-            {% for park in parks %}
-                <li>
-                    <a href="{{ path('park_details', { name: park.name }) }}">
-                        {{ park.name }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+        <a href="{{ path('favorite_park_list') }}" class="text-yellow-500 hover:underline ml-4">
+            Go to Favorite Coasters
+        </a>
+
+        {% if parks is empty %}
+            <p class="text-gray-500">You have no favorite parks.</p>
+        {% else %}
+            <ul class="list-disc pl-5">
+                {% for park in parks %}
+                    <li class="mb-2 flex justify-between items-center">
+                        <a href="{{ path('park_details', { name: park.name }) }}" class="text-blue-500 hover:underline">
+                            {{ park.name }}
+                        </a>
+                        <a href="{{ path('favorite_coaster_remove', { name: park.name }) }}" class="text-red-500 hover:underline ml-4">
+                            Remove
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
 {% endblock %}
