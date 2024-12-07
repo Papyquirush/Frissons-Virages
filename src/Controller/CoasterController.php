@@ -48,6 +48,11 @@ class CoasterController extends AbstractController
         $coasters = array_slice($coasters, ($currentPage - 1) * $limit, $limit);
         $allCountries = $this->coasterService->getEveryCountries();
         $allMaterialTypes = $this->materialTypeService->findAll();
+        $user = $this->getUser();
+        if (!$user instanceof \App\Entity\User) {
+            throw new \LogicException('The user is not an instance of \App\Entity\User.');
+        }
+        $favoriteCoasters = $this->coasterService->getFavoriteCoaster($user);
 
         return $this->render('coasters/index.html.twig', [
             'coasters' => $coasters,
@@ -55,6 +60,7 @@ class CoasterController extends AbstractController
             'materialTypes' => $allMaterialTypes,
             'currentPage' => $currentPage,
             'totalPages' => $totalPages,
+            'favoriteCoasters' => $favoriteCoasters,
         ]);
     }
 
@@ -81,7 +87,7 @@ class CoasterController extends AbstractController
         }
         $this->coasterService->addFavoriteCoaster($name, $user);
 
-        return $this->redirectToRoute('coaster_details', ['name' => $name]);
+        return $this->redirectToRoute('favorite_coaster_list');
     }
 
     #[Route('/favorite/coaster/remove/{name}', name: 'favorite_coaster_remove')]
@@ -93,7 +99,7 @@ class CoasterController extends AbstractController
         }
         $this->coasterService->removeFavoriteCoaster($name, $user);
 
-        return $this->redirectToRoute('coaster_details', ['name' => $name]);
+        return $this->redirectToRoute('favorite_coaster_list');
     }
 
 
