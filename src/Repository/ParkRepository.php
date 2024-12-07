@@ -50,5 +50,23 @@ class ParkRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    public function removeFavoritePark(string $name, \App\Entity\User $user): void
+    {
+        $park = $this->findOneBy(['name' => $name]);
+
+        $user->removePark($park);
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
+    }
+
+    public function addFavoritePark(string $name, \App\Entity\User $user): void
+    {
+        $park = $this->findOneBy(['name' => $name]);
+
+        $user->addPark($park);
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
+    }
+
 
 }

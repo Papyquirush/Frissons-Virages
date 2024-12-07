@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Favorite Coasters{% endblock %}
+
+{% block body %}
+    <h1>Favorite Coasters</h1>
+
+    {% if coasters is empty %}
+        <p>You have no favorite coasters.</p>
+    {% else %}
+        <ul>
+            {% for coaster in coasters %}
+                <li>
+                    <a href="{{ path('coaster_details', { name: coaster.name }) }}">
+                        {{ coaster.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

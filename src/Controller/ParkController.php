@@ -53,4 +53,27 @@ class ParkController extends AbstractController
         return $this->render('carteId.html.twig', ['name' => $name]);
     }
 
+    #[Route('/favorite/park/add/{name}', name: 'favorite_park_add')]
+    public function addFavoritePark(string $name): Response
+    {
+        $user = $this->getUser();
+        if (!$user instanceof \App\Entity\User) {
+            throw new \LogicException('The user is not an instance of \App\Entity\User.');
+        }
+        $this->parkService->addFavoritePark($name, $user);
+        return $this->redirectToRoute('park_carte_id', ['name' => $name]);
+    }
+
+    #[Route('/favorite/park/remove/{name}', name: 'favorite_park_remove')]
+    public function removeFavoritePark(string $name): Response
+    {
+        $user = $this->getUser();
+        if (!$user instanceof \App\Entity\User) {
+            throw new \LogicException('The user is not an instance of \App\Entity\User.');
+        }
+        $this->parkService->removeFavoritePark($name, $user);
+        return $this->redirectToRoute('park_carte_id', ['name' => $name]);
+    }
+
+
 }
