@@ -9,20 +9,16 @@ use App\Service\MaterialTypeService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\CoasterService;
 
 
 class CoasterController extends AbstractController
 {
-    private EntityManagerInterface $entityManager;
 
     public function __construct(private readonly CoasterService $coasterService,
-                                EntityManagerInterface $entityManager,
                                 private readonly MaterialTypeService $materialTypeService)
     {
-        $this->entityManager = $entityManager;
     }
 
     #[Route('/', name: 'coaster_list')]
@@ -75,8 +71,16 @@ class CoasterController extends AbstractController
             throw $this->createNotFoundException('The coaster does not exist');
         }
 
+        $user = $this->getUser();
+        if ($user instanceof User) {
+            $favoriteCoasters = $this->coasterService->getFavoriteCoaster($user);
+        }else {
+            $favoriteCoasters = [];
+        }
+
         return $this->render('coasters/details.html.twig', [
-            'coaster' => $coaster
+            'coaster' => $coaster,
+            'favoriteCoasters' => $favoriteCoasters,
         ]);
     }
 

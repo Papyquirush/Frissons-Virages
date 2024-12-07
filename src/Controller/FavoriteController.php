@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Service\CoasterService;
+use App\Service\ParkService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +18,7 @@ class FavoriteController extends AbstractController
 
 
 
-    public function __construct(private readonly CoasterService $coasterService)
+    public function __construct(private readonly CoasterService $coasterService, private readonly ParkService $parkService)
     {
 
     }
@@ -45,7 +46,7 @@ class FavoriteController extends AbstractController
         if (!$user instanceof User) {
              $this->redirectToRoute('app_login');
         }
-        $parks = $this->coasterService->getFavoritePark($user);
+        $parks = $this->parkService->getFavoriteParkS($user);
 
 
         return $this->render('favorite/park.html.twig', [

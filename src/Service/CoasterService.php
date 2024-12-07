@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Coaster;
 use App\Entity\User;
 use App\Repository\CoasterRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class CoasterService
@@ -37,12 +38,12 @@ class CoasterService
         return $this->coasterRepository->findOneBy(['name' => $name]);
     }
 
-    public function findWithFilters(array $filters)
+    public function findWithFilters(array $filters): array
     {
        return $this->coasterRepository->findWithFilters($filters);
     }
 
-    public function getEveryCountries()
+    public function getEveryCountries(): array
     {
         return $this->coasterRepository->getEveryCountries();
     }
@@ -57,17 +58,12 @@ class CoasterService
         $this->coasterRepository->removeFavoriteCoaster($name, $user);
     }
 
-    public function getFavoriteCoaster(User $user): \Doctrine\Common\Collections\Collection
+    public function getFavoriteCoaster(User $user): Collection
     {
         return $this->coasterRepository->getFavoriteCoaster($user);
     }
 
-    public function getFavoritePark(User $user): \Doctrine\Common\Collections\Collection
-    {
-        return $this->coasterRepository->getFavoritePark($user);
-    }
-
-    public function findRankedCoasters()
+    public function findRankedCoasters(): array
     {
         return $this->coasterRepository->findRankedCoasters();
     }

@@ -1,19 +1,23 @@
-<header class="mx-[10%]">
-<div class="flex space justify-between px-8 items-center">
-    <a href="{{ path('coaster_list') }}" class="w-[10%] h-[10%]">
-        <img src="{{ asset('images/logoFetVi.png') }}" alt="Logo de Frissons et Virages" class="">
-    </a>
-    <div class="flex space-x-8 text-lg">
-        <a href="{{ path('coaster_versus')}}">Comparateur de coaster</a>
-        <a href="{{ path('coaster_ranking')}}">Classement mondial des coasters</a>
-        <a href="{{ path('park_carte')}}">Carte de coasters</a>
-        {% if app.user %}
-            <a href="{{ path('favorite_coaster_list') }}">Mes favoris</a>
-            <a class="" href="{{ path('app_logout') }}">Se déconnecter</a>
-        {% else %}
-            <a class="" href="{{ path('app_login') }}">Se connecter</a>
-            <a class="" href="{{ path('register') }}">Créer un compte</a>
-        {% endif %}
+<header class="bg-gray-800 text-white py-4">
+    <div class="container mx-auto flex justify-between items-center px-8">
+        <a href="{{ path('coaster_list') }}" class="w-24 h-24 bg-white rounded-full flex items-center justify-center">
+            <img src="{{ asset('images/logoFetVi.png') }}" alt="Logo de Frissons et Virages" class="w-20 h-20 object-contain">
+        </a>
+        <nav class="flex space-x-8 text-lg">
+            <a href="{{ path('coaster_list') }}" class="hover:text-yellow-500 transition duration-300">Accueil</a>
+            <a href="{{ path('coaster_versus')}}" class="hover:text-yellow-500 transition duration-300">Comparateur de coaster</a>
+            <a href="{{ path('coaster_ranking') }}" class="hover:text-yellow-500 transition duration-300">Classement mondial des coasters</a>
+            <a href="{{ path('park_map') }}" class="hover:text-yellow-500 transition duration-300">Carte de coasters</a>
+            {% if app.user %}
+                <a href="{{ path('favorite_coaster_list') }}" class="hover:text-yellow-500 transition duration-300">Mes favoris</a>
+                <a href="{{ path('app_logout') }}" class="hover:text-yellow-500 transition duration-300">Se déconnecter</a>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="hover:text-yellow-500 transition duration-300">Se connecter</a>
+                <a href="{{ path('register') }}" class="hover:text-yellow-500 transition duration-300">Créer un compte</a>
+            {% endif %}
+
+
+        </nav>
+
     </div>
-</div>
 </header>
