@@ -18,16 +18,8 @@ class CoasterService
 
     public function findAllCoasters(): array
     {
-
-        $coasters = [];
-        for ($i = 1; $i <= 40; $i++) {
-
-            $coaster = $this->findCoasterByCoasterId($i);
-            if ($coaster) {
-                $coasters[] = $coaster;
-            }
-        }
-        return $coasters;
+        return $this->coasterRepository->findAll();
+        
     }
 
     public function findCoasterByCoasterId(int $coasterId): ?Coaster
