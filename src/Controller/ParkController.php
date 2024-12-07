@@ -31,11 +31,21 @@ class ParkController extends AbstractController
 
         $totalPages = (int) ceil($result['totalItems'] / $limit);
 
+        $user = $this->getUser();
+        if ($user instanceof User) {
+            $favoriteParks = $this->parkService->getFavoriteParks($user);
+        } else {
+            $favoriteParks = [];
+        }
+
+
+
         return $this->render('parks/index.html.twig', [
             'parks' => $result['parks'],
             'countries' => $countries,
             'currentPage' => $currentPage,
             'totalPages' => $totalPages,
+            'favoriteParks' => $favoriteParks
         ]);
     }
 
@@ -47,8 +57,18 @@ class ParkController extends AbstractController
         if (!$park) {
             throw $this->createNotFoundException('The park does not exist');
         };
+
+        $user = $this->getUser();
+        if ($user instanceof User) {
+            $favoriteParks = $this->parkService->getFavoriteParks($user);
+        } else {
+            $favoriteParks = [];
+        }
+
+
         return $this->render('parks/details.html.twig', [
-            'park' => $park
+            'park' => $park,
+            'favoriteParks' => $favoriteParks
         ]);
     }
 
@@ -77,17 +97,17 @@ class ParkController extends AbstractController
         return $this->json($coasters);
     }
 
-    #[Route('/carte', name: 'park_carte')]
+    #[Route('/map', name: 'park_map')]
     public function map(): Response
     {
-        return $this->render('carte.html.twig');
+        return $this->render('map.html.twig');
     }
 
 
-    #[Route('/carte/{name}', name: 'park_carte_id')]
+    #[Route('/map/{name}', name: 'park_map_id')]
     public function mapId(string $name): Response
     {
-        return $this->render('carteId.html.twig', ['name' => $name]);
+        return $this->render('mapId.html.twig', ['name' => $name]);
     }
 
     #[Route('/favorite/park/add/{name}', name: 'favorite_park_add')]
@@ -98,7 +118,7 @@ class ParkController extends AbstractController
             $this->redirectToRoute('app_login');
         }
         $this->parkService->addFavoritePark($name, $user);
-        return $this->redirectToRoute('park_carte_id', ['name' => $name]);
+        return $this->redirectToRoute('favorite_park_list', ['name' => $name]);
     }
 
     #[Route('/favorite/park/remove/{name}', name: 'favorite_park_remove')]
@@ -109,7 +129,7 @@ class ParkController extends AbstractController
             $this->redirectToRoute('app_login');
         }
         $this->parkService->removeFavoritePark($name, $user);
-        return $this->redirectToRoute('park_carte_id', ['name' => $name]);
+        return $this->redirectToRoute('favorite_park_list', ['name' => $name]);
     }
 
 

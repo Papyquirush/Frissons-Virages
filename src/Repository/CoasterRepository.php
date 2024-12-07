@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Coaster;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -114,7 +115,7 @@ class CoasterRepository extends ServiceEntityRepository
 
     }
 
-    public function removeFavoriteCoaster(string $name, User $user)
+    public function removeFavoriteCoaster(string $name, User $user): void
     {
         $coaster = $this->findOneBy(['name' => $name]);
 
@@ -123,15 +124,11 @@ class CoasterRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
-    public function getFavoriteCoaster(User $user): \Doctrine\Common\Collections\Collection
+    public function getFavoriteCoaster(User $user): Collection
     {
         return $user->getCoaster();
     }
 
-    public function getFavoritePark(User $user): \Doctrine\Common\Collections\Collection
-    {
-        return $user->getPark();
-    }
 
 
 }
