@@ -59,7 +59,18 @@
                         </a>
                         <p class="text-sm text-gray-600">{{ park.country|trans({}, 'countries') }}</p>
                     </div>
-                    <icon-star class="text-yellow-500"></icon-star>
+                    {% if app.user %}
+                        {% if park in favoriteParks %}
+                            <a href="{{ path('favorite_park_remove', { name: park.name }) }}" class="text-red-500 hover:underline ml-4">
+                                Supprimer des favoris
+                            </a>
+                        {% else %}
+                            <a href="{{ path('favorite_park_add', { name: park.name }) }}" class="text-green-500 hover:underline ml-4">
+                                Ajouter aux favoris
+                            </a>
+                        {% endif %}
+                    {% endif %}
+
                 </li>
             {% endfor %}
         </ul>

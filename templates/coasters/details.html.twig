@@ -8,6 +8,7 @@
 		<div class="bg-white rounded-lg shadow-md p-6">
 			<button onclick="window.history.back();" class="mt-4 px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400">Retour</button>
 			<h1 class="text-5xl font-bold text-center mt-4 mb-20">{{ coaster.name }}</h1>
+
 			<div class="flex justify-between mx-10">
 				<img src="{{ coaster.mainImage }}" alt="{{ coaster.name }}" class="w-[40%] h-64 object-cover rounded-md mb-4">
 				<div class="mb-4 space-y-4">
@@ -55,6 +56,17 @@
 
 				</div>
 			</div>
+			{% if app.user %}
+				{% if coaster in favoriteCoasters %}
+					<a href="{{ path('favorite_coaster_remove', { name: coaster.name }) }}" class="text-red-500 hover:underline ml-4">
+						Supprimer des favoris
+					</a>
+				{% else %}
+					<a href="{{ path('favorite_coaster_add', { name: coaster.name }) }}" class="text-green-500 hover:underline ml-4">
+						Ajouter aux favoris
+					</a>
+				{% endif %}
+			{% endif %}
 		</div>
 	</div>
 {% endblock %}
