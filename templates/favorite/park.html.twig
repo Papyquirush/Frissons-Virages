@@ -21,7 +21,7 @@
                 {% for park in parks %}
                     <li class="p-4 flex space-x-4 bg-white rounded-lg shadow-md hover:bg-gray-100 items-center">
                         <div class="flex-1">
-                            <a href="{{ path('park_details', {'name': park.name}) }}" class="text-lg font-medium text-yellow-600 hover:underline">
+                            <a href="{{ path('park_details', {'name': park.name}) }}" class="text-lg font-medium text-gray-600 hover:underline">
                                 {{ park.name }}
                             </a>
                             <p class="text-sm text-gray-600">{{ park.country|trans({}, 'countries') }}</p>
