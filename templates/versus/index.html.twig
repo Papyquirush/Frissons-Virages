@@ -1,0 +1,207 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Comparaison de montagnes russes{% endblock %}
+
+{% block body %}
+<div class="min-h-screen ">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-8">Comparaison de montagnes russes</h1>
+
+        <div class="flex flex-col md:flex-row gap-4 items-stretch">
+            <div class="flex-1  rounded-lg p-6 shadow-lg">
+                <div class="mb-6">
+                    <label for="coaster1-select" class="block text-sm font-medium text-gray-700 mb-2">
+                        Sélectionnez une montagne russe
+                    </label>
+                    <select 
+                        id="coaster1-select" 
+                        onchange="updateCoaster(1, this.value)"
+                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                    >
+                        <option value="">Choisir...</option>
+                        {% for coaster in coasters %}
+                            <option value="{{ coaster.name }}" {% if selectedCoaster1 and selectedCoaster1.name == coaster.name %}selected{% endif %}>
+                                {{ coaster.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                {% if selectedCoaster1 %}
+                    <div class="space-y-6">
+                        <div class="aspect-w-16 aspect-h-9">
+                            <img 
+                                src="{{ selectedCoaster1.mainImage }}" 
+                                alt="{{ selectedCoaster1.name }}"
+                                class="object-cover w-full h-64 rounded-lg"
+                            >
+                        </div>
+                        
+                        <h2 class="text-2xl font-bold text-gray-900">{{ selectedCoaster1.name }}</h2>
+                        
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                <span class="font-medium text-gray-600">Parc</span>
+                                <span>{{ selectedCoaster1.park.name }}</span>
+                            </div>
+
+                            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                <span class="font-medium text-gray-600">Vitesse</span>
+                                <span class="{% if selectedCoaster2 and selectedCoaster1.speed > selectedCoaster2.speed %}text-green-600 font-bold{% endif %}">
+                                    {{ selectedCoaster1.speed }} km/h
+                                </span>
+                            </div>
+
+                            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                <span class="font-medium text-gray-600">Hauteur</span>
+                                <span class="{% if selectedCoaster2 and selectedCoaster1.height > selectedCoaster2.height %}text-green-600 font-bold{% endif %}">
+                                    {{ selectedCoaster1.height }} m
+                                </span>
+                            </div>
+
+                            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                <span class="font-medium text-gray-600">Longueur</span>
+                                <span class="{% if selectedCoaster2 and selectedCoaster1.length > selectedCoaster2.length %}text-green-600 font-bold{% endif %}">
+                                    {{ selectedCoaster1.length }} m
+                                </span>
+                            </div>
+
+                            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                <span class="font-medium text-gray-600">Inversions</span>
+                                <span class="{% if selectedCoaster2 and selectedCoaster1.inversionsNumber > selectedCoaster2.inversionsNumber %}text-green-600 font-bold{% endif %}">
+                                    {{ selectedCoaster1.inversionsNumber }}
+                                </span>
+                            </div>
+
+                            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                <span class="font-medium text-gray-600">Type</span>
+                                <span>{{ selectedCoaster1.materialType.name }}</span>
+                            </div>
+
+                            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                <span class="font-medium text-gray-600">Score</span>
+                                <span class="{% if selectedCoaster2 and selectedCoaster1.score > selectedCoaster2.score %}text-green-600 font-bold{% endif %}">
+                                    {{ selectedCoaster1.score|number_format(2) }}
+                                </span>
+                            </div>
+
+                            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                <span class="font-medium text-gray-600">Rang</span>
+                                <span>#{{ selectedCoaster1.rank }}</span>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="text-center py-12 bg-gray-50 rounded-lg">
+                        <p class="text-gray-500">Sélectionnez une montagne russe pour voir ses statistiques</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="flex items-center justify-center px-4">
+                <div class="text-4xl font-bold text-gray-400">VS</div>
+            </div>
+
+            <div class="flex-1  rounded-lg p-6 shadow-lg">
+                <div class="mb-6">
+                    <label for="coaster2-select" class="block text-sm font-medium text-gray-700 mb-2">
+                        Sélectionnez une montagne russe
+                    </label>
+                    <select 
+                        id="coaster2-select" 
+                        onchange="updateCoaster(2, this.value)"
+                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500"
+                    >
+                        <option value="">Choisir...</option>
+                        {% for coaster in coasters %}
+                            <option value="{{ coaster.name }}" {% if selectedCoaster2 and selectedCoaster2.name == coaster.name %}selected{% endif %}>
+                                {{ coaster.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                {% if selectedCoaster2 %}
+                    <div class="space-y-6">
+                        <div class="aspect-w-16 aspect-h-9">
+                            <img 
+                                src="{{ selectedCoaster2.mainImage }}" 
+                                alt="{{ selectedCoaster2.name }}"
+                                class="object-cover w-full h-64 rounded-lg"
+                            >
+                        </div>
+                        
+                        <h2 class="text-2xl font-bold text-gray-900">{{ selectedCoaster2.name }}</h2>
+                        
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                <span class="font-medium text-gray-600">Parc</span>
+                                <span>{{ selectedCoaster2.park.name }}</span>
+                            </div>
+
+                            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                <span class="font-medium text-gray-600">Vitesse</span>
+                                <span class="{% if selectedCoaster1 and selectedCoaster2.speed > selectedCoaster1.speed %}text-green-600 font-bold{% endif %}">
+                                    {{ selectedCoaster2.speed }} km/h
+                                </span>
+                            </div>
+
+                            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                <span class="font-medium text-gray-600">Hauteur</span>
+                                <span class="{% if selectedCoaster1 and selectedCoaster2.height > selectedCoaster1.height %}text-green-600 font-bold{% endif %}">
+                                    {{ selectedCoaster2.height }} m
+                                </span>
+                            </div>
+
+                            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                <span class="font-medium text-gray-600">Longueur</span>
+                                <span class="{% if selectedCoaster1 and selectedCoaster2.length > selectedCoaster1.length %}text-green-600 font-bold{% endif %}">
+                                    {{ selectedCoaster2.length }} m
+                                </span>
+                            </div>
+
+                            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                <span class="font-medium text-gray-600">Inversions</span>
+                                <span class="{% if selectedCoaster1 and selectedCoaster2.inversionsNumber > selectedCoaster1.inversionsNumber %}text-green-600 font-bold{% endif %}">
+                                    {{ selectedCoaster2.inversionsNumber }}
+                                </span>
+                            </div>
+
+                            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                <span class="font-medium text-gray-600">Type</span>
+                                <span>{{ selectedCoaster2.materialType.name }}</span>
+                            </div>
+
+                            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                <span class="font-medium text-gray-600">Score</span>
+                                <span class="{% if selectedCoaster1 and selectedCoaster2.score > selectedCoaster1.score %}text-green-600 font-bold{% endif %}">
+                                    {{ selectedCoaster2.score|number_format(2) }}
+                                </span>
+                            </div>
+
+                            <div class="flex justify-between items-center py-2 border-b border-gray-200">
+                                <span class="font-medium text-gray-600">Rang</span>
+                                <span>#{{ selectedCoaster2.rank }}</span>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="text-center py-12 bg-gray-50 rounded-lg">
+                        <p class="text-gray-500">Sélectionnez une montagne russe pour voir ses statistiques</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block javascripts %}
+<script>
+    function updateCoaster(side, coasterName) {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set(`coaster${side}`, coasterName);
+        window.location.href = `${window.location.pathname}?${urlParams.toString()}`;
+    }
+</script>
+{% endblock %}
+{% endblock %}
