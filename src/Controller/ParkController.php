@@ -100,14 +100,14 @@ class ParkController extends AbstractController
     #[Route('/map', name: 'park_map')]
     public function map(): Response
     {
-        return $this->render('map.html.twig');
+        return $this->render('map/map.html.twig');
     }
 
 
     #[Route('/map/{name}', name: 'park_map_id')]
     public function mapId(string $name): Response
     {
-        return $this->render('mapId.html.twig', ['name' => $name]);
+        return $this->render('map/mapId.html.twig', ['name' => $name]);
     }
 
     #[Route('/favorite/park/add/{name}', name: 'favorite_park_add')]
