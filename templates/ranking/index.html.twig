@@ -1,61 +1,71 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Classement des Roller Coasters{% endblock %}
+{% block title %}Classement Mondial
+{% endblock %}
 
 {% block body %}
-    <div class="container mx-auto p-6">
-        <h1 class="text-4xl font-bold text-center mb-6 text-gray-800">Classement des Roller Coasters</h1>
+	<div class="container mx-auto p-6">
+		<h1 class="text-4xl font-bold text-center mb-6 text-gray-800">Classement des Roller Coasters</h1>
 
-        <div class="overflow-x-auto bg-white shadow-lg rounded-lg">
-            <table class="min-w-full table-auto text-sm text-left text-gray-500">
-                <thead class="bg-gray-800 text-white">
-                    <tr>
-                        <th class="px-4 py-2 text-center">Rang</th>
-                        <th class="px-4 py-2">Nom</th>
-                        <th class="px-4 py-2 text-center">Vitesse</th>
-                        <th class="px-4 py-2 text-center">Hauteur</th>
-                        <th class="px-4 py-2 text-center">Inversions</th>
-                        <th class="px-4 py-2 text-center">Score</th>
-                        <th class="px-4 py-2 text-center">Parc</th>
-                        <th class="px-4 py-2 text-center">Image</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for coaster in coasters %}
-                        <tr class="border-b hover:bg-gray-100 transition duration-200 ease-in-out">
-                            <td class="px-4 py-2 text-center">{{ coaster.rank }}</td>
-                            <td class="px-4 py-2"><a href="{{ path('coaster_details', {'name': coaster.name}) }}">{{ coaster.name }}</a></td>
-                            <td class="px-4 py-2 text-center">{{ coaster.speed }} km/h</td>
-                            <td class="px-4 py-2 text-center">{{ coaster.height }} m</td>
-                            <td class="px-4 py-2 text-center">{{ coaster.inversionsNumber }}</td>
-                            <td class="px-4 py-2 text-center">{{ coaster.score }}</td>
-                            <td class="px-4 py-2 text-center"><a href="{{ path('park_details', {'name': coaster.park.name}) }}">{{ coaster.park.name }}</a></td>
-                            <td class="px-4 py-2 text-center">
-                                {% if coaster.mainImage != "https://pictures.captaincoaster.com/280x210/" %}
-                                   <img src="{{ coaster.mainImage }}" alt="Image de {{ coaster.name }}" class="w-16 h-16 object-cover rounded-lg">
-                                {% else %}
-                                    <img src="{{ asset('images/logoFetVi.png') }}" alt="Image de {{ coaster.name }}" class="w-16 h-16 object-cover rounded-lg">
-                            
-                                {% endif %}
-                               </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+		<div class="overflow-x-auto bg-white shadow-lg rounded-lg">
+			<table class="min-w-full table-auto text-sm text-left text-gray-500">
+				<thead class="bg-gray-800 text-white">
+					<tr>
+						<th class="px-4 py-2 text-center">Rang</th>
+						<th class="px-4 py-2">Nom</th>
+						<th class="px-4 py-2 text-center">Vitesse</th>
+						<th class="px-4 py-2 text-center">Hauteur</th>
+						<th class="px-4 py-2 text-center">Inversions</th>
+						<th class="px-4 py-2 text-center">Score</th>
+						<th class="px-4 py-2 text-center">Parc</th>
+						<th class="px-4 py-2 text-center">Image</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for coaster in coasters %}
+						<tr class="border-b hover:bg-gray-100 transition duration-200 ease-in-out">
+							<td class="px-4 py-2 text-center">{{ coaster.rank }}</td>
+							<td class="px-4 py-2">
+								<a href="{{ path('coaster_details', {'name': coaster.name}) }}">{{ coaster.name }}</a>
+							</td>
+							<td class="px-4 py-2 text-center">{{ coaster.speed }}
+								km/h</td>
+							<td class="px-4 py-2 text-center">{{ coaster.height }}
+								m</td>
+							<td class="px-4 py-2 text-center">{{ coaster.inversionsNumber }}</td>
+							<td class="px-4 py-2 text-center">{{ coaster.score }}</td>
+							<td class="px-4 py-2 text-center">
+								<a href="{{ path('park_details', {'name': coaster.park.name}) }}">{{ coaster.park.name }}</a>
+							</td>
+							<td class="px-4 py-2 text-center">
+								{% if coaster.mainImage != "https://pictures.captaincoaster.com/280x210/" %}
+									<img src="{{ coaster.mainImage }}" alt="Image de {{ coaster.name }}" class="w-16 h-16 object-cover rounded-lg">
+								{% else %}
+									<img src="{{ asset('images/logoFetVi.png') }}" alt="Image de {{ coaster.name }}" class="w-16 h-16 object-cover rounded-lg">
 
-        <div class="flex justify-between items-center mt-6">
-            {% if currentPage > 1 %}
-                <a href="{{ path('coaster_ranking', app.request.query.all|merge({'page': currentPage - 1})) }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400">Précédent</a>
-            {% else %}
-                <span class="px-4 py-2 bg-gray-200 text-gray-400 rounded-md">Précédent</span>
-            {% endif %}
-            <span class="px-4 py-2">Page {{ currentPage }} sur {{ totalPages }}</span>
-            {% if currentPage < totalPages %}
-                <a href="{{ path('coaster_ranking', app.request.query.all|merge({'page': currentPage + 1})) }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400">Suivant</a>
-            {% else %}
-                <span class="px-4 py-2 bg-gray-200 text-gray-400 rounded-md">Suivant</span>
-            {% endif %}
-        </div>
-    </div>
+								{% endif %}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+
+		<div class="flex justify-between items-center mt-6">
+			{% if currentPage > 1 %}
+				<a href="{{ path('coaster_ranking', app.request.query.all|merge({'page': currentPage - 1})) }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400">Précédent</a>
+			{% else %}
+				<span class="px-4 py-2 bg-gray-200 text-gray-400 rounded-md">Précédent</span>
+			{% endif %}
+			<span class="px-4 py-2">Page
+				{{ currentPage }}
+				sur
+				{{ totalPages }}</span>
+			{% if currentPage < totalPages %}
+				<a href="{{ path('coaster_ranking', app.request.query.all|merge({'page': currentPage + 1})) }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400">Suivant</a>
+			{% else %}
+				<span class="px-4 py-2 bg-gray-200 text-gray-400 rounded-md">Suivant</span>
+			{% endif %}
+		</div>
+	</div>
 {% endblock %}

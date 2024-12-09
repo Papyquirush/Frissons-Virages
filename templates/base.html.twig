@@ -1,12 +1,11 @@
 <!doctype html>
 <html>
-<<<<<<< HEAD
 	<head>
 		<meta lang="fr">
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>
-			{% block title %}Frissons & Virages -
+			{% block title %}Frissons & Virages
 			{% endblock %}
 		</title>
 
@@ -25,27 +24,3 @@
 		{{ encore_entry_script_tags('app') }}
 	{% endblock %}
 </html>
-=======
-<head>
-    <meta lang="fr">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frissons&Virages</title>
-    <link rel="icon" type="image/png" href="{{ asset('images/logoFetVi.ico') }}">
-    {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('build/app.css') }}">
-    {% endblock %}
-</head>
-<body >
-{{ include('partials/header.html.twig') }}
-<main>
-    {% block body %}
-    {% endblock %}
-</main>
-{{ include('partials/footer.html.twig') }}
-</body>
-{% block javascripts %}
-    {{ encore_entry_script_tags('app') }}
-{% endblock %}
-</html>
->>>>>>> 4431978bccb5ee1b7823dadda78624a001974de1

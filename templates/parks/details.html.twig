@@ -1,83 +1,85 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails du parc{% endblock %}
+{% block title %}Détails du parc -
+	{{park.name}}
+{% endblock %}
 
 {% block body %}
-    <div class="container mx-auto p-4">
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <div class="flex justify-between items-center">
-                <button onclick="window.history.back();" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400">Retour</button>
+	<div class="container mx-auto p-4">
+		<div class="bg-white rounded-lg shadow-md p-6">
+			<div class="flex justify-between items-center">
+				<button onclick="window.history.back();" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400">Retour</button>
 
-                <a href="{{ path('park_map_id', {'name': park.name}) }}"
-                   class="px-4 py-2 bg-yellow-500 text-white rounded-md shadow-md hover:bg-yellow-600 flex items-center space-x-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
-                    </svg>
-                    <span>Voir sur la carte</span>
-                </a>
-            </div>
-            
-            <h1 class="text-5xl font-bold text-center mt-4 mb-20">{{ park.name }}</h1>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div class="space-y-4">
-                    <h2 class="text-2xl font-semibold mb-2 underline">Les caractéristiques :</h2>
-                    <p class="text-lg">
-                        <strong>Pays:</strong>
-                        {{ park.country |trans({}, 'countries') }}
-                    </p>
-                    <p class="text-lg">
-                        <strong>Latitude:</strong>
-                        {{ park.latitude }}
-                    </p>
-                    <p class="text-lg">
-                        <strong>Longitude:</strong>
-                        {{ park.longitude }}
-                    </p>
-                </div>
+				<a href="{{ path('park_map_id', {'name': park.name}) }}" class="px-4 py-2 bg-yellow-500 text-white rounded-md shadow-md hover:bg-yellow-600 flex items-center space-x-2">
+					<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewbox="0 0 20 20" fill="currentColor">
+						<path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+					</svg>
+					<span>Voir sur la carte</span>
+				</a>
+			</div>
 
-                <div class="space-y-4">
-                    <h2 class="text-2xl font-semibold mb-6 underline">Les montagnes russes :</h2>
-                    <div class="grid gap-4">
-                        {% if park.coasters is defined and park.coasters|length > 0 %}
-                            {% for coaster in park.coasters %}
-                                <div class="bg-gray-50 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
-                                    <a href="{{ path('coaster_details', {'name': coaster.name}) }}" 
-                                       class="flex items-center space-x-4">
-                                        {% if coaster.mainImage != "https://pictures.captaincoaster.com/280x210/" %}
-                                             <img src="{{ coaster.mainImage }}"  alt="{{ coaster.name }}" class="w-24 h-16 object-cover rounded-md">
-                                        {% else %}
-                                            <img src="{{ asset('images/logoFetVi.png') }}"  alt="{{ coaster.name }}" class="w-24 h-16 object-cover rounded-md">
-                                        {% endif %}
+			<h1 class="text-5xl font-bold text-center mt-4 mb-20">{{ park.name }}</h1>
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+				<div class="space-y-4">
+					<h2 class="text-2xl font-semibold mb-2 underline">Les caractéristiques :</h2>
+					<p class="text-lg">
+						<strong>Pays:</strong>
+						{{ park.country |trans({}, 'countries') }}
+					</p>
+					<p class="text-lg">
+						<strong>Latitude:</strong>
+						{{ park.latitude }}
+					</p>
+					<p class="text-lg">
+						<strong>Longitude:</strong>
+						{{ park.longitude }}
+					</p>
+				</div>
 
-                                        <div>
-                                            <h3 class="font-semibold text-lg text-gray-600">{{ coaster.name }}</h3>
-                                            <p class="text-sm text-gray-600">
-                                                <span class="font-medium">Type:</span> {{ coaster.materialType.name }}
-                                            </p>
-                                            <p class="text-sm text-gray-600">
-                                                <span class="font-medium">Hauteur:</span> {{ coaster.height }}m
-                                            </p>
-                                        </div>
-                                    </a>
-                                </div>
-                            {% endfor %}
-                        {% else %}
-                            <p class="text-gray-500 italic">Aucune montagne russe enregistrée pour ce parc.</p>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            {% if app.user %}
-                {% if park in favoriteParks %}
-                    <a href="{{ path('favorite_park_remove', { name: park.name }) }}" class="text-red-500 hover:underline ml-4">
-                        Supprimer des favoris
-                    </a>
-                {% else %}
-                    <a href="{{ path('favorite_park_add', { name: park.name }) }}" class="text-green-500 hover:underline ml-4">
-                        Ajouter aux favoris
-                    </a>
-                {% endif %}
-            {% endif %}
-        </div>
-    </div>
+				<div class="space-y-4">
+					<h2 class="text-2xl font-semibold mb-6 underline">Les montagnes russes :</h2>
+					<div class="grid gap-4">
+						{% if park.coasters is defined and park.coasters|length > 0 %}
+							{% for coaster in park.coasters %}
+								<div class="bg-gray-50 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
+									<a href="{{ path('coaster_details', {'name': coaster.name}) }}" class="flex items-center space-x-4">
+										{% if coaster.mainImage != "https://pictures.captaincoaster.com/280x210/" %}
+											<img src="{{ coaster.mainImage }}" alt="{{ coaster.name }}" class="w-24 h-16 object-cover rounded-md">
+										{% else %}
+											<img src="{{ asset('images/logoFetVi.png') }}" alt="{{ coaster.name }}" class="w-24 h-16 object-cover rounded-md">
+										{% endif %}
+
+										<div>
+											<h3 class="font-semibold text-lg text-gray-600">{{ coaster.name }}</h3>
+											<p class="text-sm text-gray-600">
+												<span class="font-medium">Type:</span>
+												{{ coaster.materialType.name }}
+											</p>
+											<p class="text-sm text-gray-600">
+												<span class="font-medium">Hauteur:</span>
+												{{ coaster.height }}m
+											</p>
+										</div>
+									</a>
+								</div>
+							{% endfor %}
+						{% else %}
+							<p class="text-gray-500 italic">Aucune montagne russe enregistrée pour ce parc.</p>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			{% if app.user %}
+				{% if park in favoriteParks %}
+					<a href="{{ path('favorite_park_remove', { name: park.name }) }}" class="text-red-500 hover:underline ml-4">
+						Supprimer des favoris
+					</a>
+				{% else %}
+					<a href="{{ path('favorite_park_add', { name: park.name }) }}" class="text-green-500 hover:underline ml-4">
+						Ajouter aux favoris
+					</a>
+				{% endif %}
+			{% endif %}
+		</div>
+	</div>
 {% endblock %}

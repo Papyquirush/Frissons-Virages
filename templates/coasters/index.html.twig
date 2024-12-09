@@ -1,27 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home
+{% block title %}Page d'accueil - Liste des coasters
 {% endblock %}
 
 {% block body %}
 	<div class="container mx-auto p-4 space-y-6 ">
 		<div class="w-full flex justify-around mt-4">
-			<a href="{{ path('coaster_list') }}" 
-			class="p-4 rounded-lg text-white font-semibold shadow-md 
-					{% if app.request.get('_route') == 'coaster_list' %}
-						bg-yellow-500 hover:bg-yellow-600
-					{% else %}
-						bg-gray-500 hover:bg-gray-600
-					{% endif %}">
+			<a href="{{ path('coaster_list') }}" class="p-4 rounded-lg text-white font-semibold shadow-md
+																									{% if app.request.get('_route') == 'coaster_list' %}
+																										bg-yellow-500 hover:bg-yellow-600
+																									{% else %}
+																										bg-gray-500 hover:bg-gray-600
+																									{% endif %}">
 				Coasters
 			</a>
-			<a href="{{ path('park_list') }}" 
-			class="p-4 rounded-lg text-white font-semibold shadow-md 
-					{% if app.request.get('_route') == 'park_list' %}
-						bg-yellow-500 hover:bg-yellow-600 
-					{% else %}
-						bg-gray-500 hover:bg-gray-600
-					{% endif %}">
+			<a href="{{ path('park_list') }}" class="p-4 rounded-lg text-white font-semibold shadow-md
+																									{% if app.request.get('_route') == 'park_list' %}
+																										bg-yellow-500 hover:bg-yellow-600
+																									{% else %}
+																										bg-gray-500 hover:bg-gray-600
+																									{% endif %}">
 				Parcs
 			</a>
 		</div>
@@ -29,8 +27,7 @@
 
 		<form method="get" action="{{ path('coaster_list') }}" class="flex justify-around space-x-4 ">
 			<div class="flex items-center w-full">
-				<input type="text" name="q" placeholder="Nom du coaster" value="{{ app.request.query.get('q') }}" 
-					class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent">
+				<input type="text" name="q" placeholder="Nom du coaster" value="{{ app.request.query.get('q') }}" class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent">
 			</div>
 			<div class="flex items-center w-full">
 				<select name="country" class="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500">
@@ -98,7 +95,10 @@
 			{% if currentPage > 1 %}
 				<a href="{{ path('coaster_list', app.request.query.all|merge({'page': currentPage - 1})) }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400">Précédent</a>
 			{% endif %}
-			<span class="px-4 py-2">Page {{ currentPage }} sur {{ totalPages }}</span>
+			<span class="px-4 py-2">Page
+				{{ currentPage }}
+				sur
+				{{ totalPages }}</span>
 			{% if currentPage < totalPages %}
 				<a href="{{ path('coaster_list', app.request.query.all|merge({'page': currentPage + 1})) }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md shadow-md hover:bg-gray-400">Suivant</a>
 			{% endif %}

@@ -1,37 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Favorite Parks{% endblock %}
+{% block title %}Parcs favoris
+{% endblock %}
 
 {% block body %}
-    <div class="container mx-auto p-4">
-        <h1 class="text-4xl font-extrabold text-center text-gray-500 mb-8">Favorite Parks</h1>
+	<div class="container mx-auto p-4">
+		<h1 class="text-4xl font-extrabold text-center text-gray-500 mb-8">Favorite Parks</h1>
 
 
+		<div class="p-4 flex justify-center items-center mb-4">
+			<a href="{{ path('favorite_coaster_list') }}" class="mx-4 px-6 py-3 bg-gray-500 text-white font-semibold rounded-lg shadow-md hover:bg-gray-600 transition duration-300">
+				Go to Favorite Coasters
+			</a>
+		</div>
 
-        <div class="p-4 flex justify-center items-center mb-4">
-            <a href="{{ path('favorite_coaster_list') }}" class="mx-4 px-6 py-3 bg-gray-500 text-white font-semibold rounded-lg shadow-md hover:bg-gray-600 transition duration-300">
-                Go to Favorite Coasters
-            </a>
-        </div>
-
-        {% if parks is empty %}
-            <p class="text-gray-500">You have no favorite parks.</p>
-        {% else %}
-            <ul class="space-y-4">
-                {% for park in parks %}
-                    <li class="p-4 flex space-x-4 bg-white rounded-lg shadow-md hover:bg-gray-100 items-center">
-                        <div class="flex-1">
-                            <a href="{{ path('park_details', {'name': park.name}) }}" class="text-lg font-medium text-gray-600 hover:underline">
-                                {{ park.name }}
-                            </a>
-                            <p class="text-sm text-gray-600">{{ park.country|trans({}, 'countries') }}</p>
-                        </div>
-                                <a href="{{ path('favorite_park_remove', { name: park.name }) }}" class="text-red-500 hover:underline ml-4">
-                                    Supprimer des favoris
-                                </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    </div>
+		{% if parks is empty %}
+			<p class="text-gray-500">You have no favorite parks.</p>
+		{% else %}
+			<ul class="space-y-4">
+				{% for park in parks %}
+					<li class="p-4 flex space-x-4 bg-white rounded-lg shadow-md hover:bg-gray-100 items-center">
+						<div class="flex-1">
+							<a href="{{ path('park_details', {'name': park.name}) }}" class="text-lg font-medium text-gray-600 hover:underline">
+								{{ park.name }}
+							</a>
+							<p class="text-sm text-gray-600">{{ park.country|trans({}, 'countries') }}</p>
+						</div>
+						<a href="{{ path('favorite_park_remove', { name: park.name }) }}" class="text-red-500 hover:underline ml-4">
+							Supprimer des favoris
+						</a>
+					</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+	</div>
 {% endblock %}
