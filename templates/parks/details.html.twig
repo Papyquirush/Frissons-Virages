@@ -43,9 +43,12 @@
                                 <div class="bg-gray-50 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200">
                                     <a href="{{ path('coaster_details', {'name': coaster.name}) }}" 
                                        class="flex items-center space-x-4">
-                                        <img src="{{ coaster.mainImage }}" 
-                                             alt="{{ coaster.name }}" 
-                                             class="w-24 h-16 object-cover rounded-md">
+                                        {% if coaster.mainImage != "https://pictures.captaincoaster.com/280x210/" %}
+                                             <img src="{{ coaster.mainImage }}"  alt="{{ coaster.name }}" class="w-24 h-16 object-cover rounded-md">
+                                        {% else %}
+                                            <img src="{{ asset('images/logoFetVi.png') }}"  alt="{{ coaster.name }}" class="w-24 h-16 object-cover rounded-md">
+                                        {% endif %}
+
                                         <div>
                                             <h3 class="font-semibold text-lg text-gray-600">{{ coaster.name }}</h3>
                                             <p class="text-sm text-gray-600">

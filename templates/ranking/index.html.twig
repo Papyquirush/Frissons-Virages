@@ -31,8 +31,13 @@
                             <td class="px-4 py-2 text-center">{{ coaster.score }}</td>
                             <td class="px-4 py-2 text-center"><a href="{{ path('park_details', {'name': coaster.park.name}) }}">{{ coaster.park.name }}</a></td>
                             <td class="px-4 py-2 text-center">
-                                <img src="{{ coaster.mainImage }}" alt="Image de {{ coaster.name }}" class="w-16 h-16 object-cover rounded-lg">
-                            </td>
+                                {% if coaster.mainImage != "https://pictures.captaincoaster.com/280x210/" %}
+                                   <img src="{{ coaster.mainImage }}" alt="Image de {{ coaster.name }}" class="w-16 h-16 object-cover rounded-lg">
+                                {% else %}
+                                    <img src="{{ asset('images/logoFetVi.png') }}" alt="Image de {{ coaster.name }}" class="w-16 h-16 object-cover rounded-lg">
+                            
+                                {% endif %}
+                               </td>
                         </tr>
                     {% endfor %}
                 </tbody>
