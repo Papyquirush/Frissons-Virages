@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails du coaster
+{% block title %}Détails du coaster -
+	{{ coaster.name }}
 {% endblock %}
+
 
 {% block body %}
 	<div class="container mx-auto p-4">
@@ -13,9 +15,9 @@
 				{% if coaster.mainImage != "https://pictures.captaincoaster.com/280x210/" %}
 					<img src="{{ coaster.mainImage }}" alt="{{ coaster.name }}" class="w-[40%] h-64 object-cover rounded-md mb-4">
 				{% else %}
-						<img src="{{ asset('images/logoFetVi.png') }}" alt="{{ coaster.name }}" class="w-[40%] h-64 object-cover rounded-md mb-4">
+					<img src="{{ asset('images/logoFetVi.png') }}" alt="{{ coaster.name }}" class="w-[40%] h-64 object-cover rounded-md mb-4">
 				{% endif %}
-					<div class="mb-4 space-y-4">
+				<div class="mb-4 space-y-4">
 					<h2 class="text-2xl font-semibold mb-2 underline">Les caractéristiques :</h2>
 					<p class="text-lg">
 						<strong>Hauteur:</strong>
@@ -42,6 +44,9 @@
 						<strong>Nombres de launches:</strong>
 						{{ coaster.launches.count}}</p>
 					<p class="text-lg">
+						<strong>Nombres d'inversions:</strong>
+						{{ coaster.inversionsNumber}}</p>
+					<p class="text-lg">
 						<strong>Types d'attache:</strong>
 						{{ coaster.restraint.name|trans({}, 'restraints') }}
 					</p>
@@ -55,7 +60,9 @@
 				</div>
 				<div class="mb-4 space-y-4">
 					<h2 class="text-2xl font-semibold mb-2 underline ">Le parc :</h2>
-					<p class="text-lg text-center p-4 border"><a href="{{ path('park_details', {'name': coaster.park.name}) }}">{{ coaster.park.name }}</a></p>
+					<p class="text-lg text-center p-4 border">
+						<a href="{{ path('park_details', {'name': coaster.park.name}) }}">{{ coaster.park.name }}</a>
+					</p>
 					<p class="text-lg">{{ coaster.park.country|trans({}, 'countries') }}</p>
 
 				</div>
