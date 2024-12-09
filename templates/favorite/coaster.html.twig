@@ -5,17 +5,17 @@
 
 {% block body %}
 	<div class="container mx-auto p-4">
-		<h1 class="text-4xl font-extrabold text-center text-gray-500 mb-8">Favorite Coasters</h1>
+		<h1 class="text-4xl font-extrabold text-center text-gray-500 mb-8">Coasters favoris</h1>
 
 
 		<div class="p-4 flex justify-center items-center mb-4">
 			<a href="{{ path('favorite_park_list') }}" class="mx-4 px-6 py-3 bg-gray-500 text-white font-semibold rounded-lg shadow-md hover:bg-gray-600 transition duration-300">
-				Go to Favorite Parks
+				Aller à la liste des parcs favoris
 			</a>
 		</div>
 
 		{% if coasters is empty %}
-			<p class="text-gray-500">You have no favorite coasters.</p>
+			<p class="text-gray-500">Vous n'avez pas de coaster favoris</p>
 		{% else %}
 			<ul class="list-disc pl-5 space-y-4">
 				{% for coaster in coasters %}
