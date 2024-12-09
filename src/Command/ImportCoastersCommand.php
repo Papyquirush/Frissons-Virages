@@ -29,6 +29,7 @@ class ImportCoastersCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        /*
         $io = new SymfonyStyle($input, $output);
 
 
@@ -52,6 +53,6 @@ class ImportCoastersCommand extends Command
 
         $io->success('Coasters imported successfully!');
 
-        return Command::SUCCESS;
+        return Command::SUCCESS;*/
     }
 }

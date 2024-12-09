@@ -31,6 +31,7 @@ class ImportParksCommand extends Command {
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        /*
         $io = new SymfonyStyle($input, $output);
 
         $progressBar = new ProgressBar($output, 2000);
@@ -60,7 +61,7 @@ class ImportParksCommand extends Command {
         $io->success('Parks updated successfully!');
 
 
-        return Command::SUCCESS;
+        return Command::SUCCESS;*/
     }
 
 }
